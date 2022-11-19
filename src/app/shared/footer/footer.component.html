@@ -1,0 +1,60 @@
+<footer class="page-footer font-small blue d-block footer-fijo">
+    <div class="col-lg-12 d-block preguntas-frec-relat">
+        <div class="col-lg-6 d-block preguntas-frec">
+            <div class="col-md-4 offset-md-4 opacityPreguntas">
+                <a href="#" data-toggle="modal" data-target="#modalPreguntas">
+                    <img src="assets/img/icono-FAQs.svg" alt="" width="46px" heigth="46px">
+                </a>
+            </div>
+        </div>
+        <div class="modal fade" id="modalPreguntas" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 90%;">
+                <div class="modal-content">
+                    <div class="modal-header btn-color padding">
+                        <h3 class="font-weight-bold color-blanco">PREGUNTAS FRECUENTES</h3>
+                        <button type="button" class="close btnOn" data-dismiss="modal" data-backdrop="false"
+                            aria-label="close">
+                            <span>
+                                <h4 class="color-blanco">&times;</h4>
+                            </span>
+                        </button>
+                    </div>
+                    <div>
+                        <app-preguntas></app-preguntas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12 foter-cl-12">
+        <div class="footer-copyright fondo">
+            <div class="col-lg-10 div-center foter-azul btn-azul pt-4 pb-4 mb-3 font-size-16 footer-radius">
+                <div class="col-lg-12">
+                    <span class="txt-blanco fw-700">Politica sobre COOKIES ! </span>
+                    <span class="txt-blanco">
+                       Utilizamos coockies propias y de terceros para ofrecerte una mejor experiencia y servicio, de acuerdo a  tus habitos de navegacion
+                    </span>                
+                </div>
+                <div class="col-lg-12">
+                    <span class="txt-blanco fw-700">Importante</span>
+                    <span class="txt-blanco">
+                        Si continuas navegando, consideramos que aceptas su uso.
+                    </span>              
+                </div>        
+
+            </div>
+            <div class="col-lg-12">
+                <span class="txt-blanco">Claro Colombia {{anio}}</span> <span class="pipe"> | </span>
+                <a [routerLink]="['terminos']" target="_blank" routerLinkActive="active">
+                    <span class="txt-azul">Términos y Condiciones / Política del Concurso</span>
+                </a> <span class="pipe"> | </span>
+                <a href="mailto:{{correo}}"> <span class="txt-blanco contacto-footer">{{ contacto }}  </span><span
+                        class="txt-azul"> {{texto | lowercase }} </span></a>
+                <a href="#" data-toggle="modal" data-target="#exampleModal"></a>
+            </div>
+        </div>
+    </div>
+</footer>

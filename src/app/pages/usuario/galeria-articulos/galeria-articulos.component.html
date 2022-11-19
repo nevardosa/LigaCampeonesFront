@@ -1,0 +1,13 @@
+<div class="scroll-cards" *ngIf="cargaCompleta && articulos && articulos.length > 0">
+    <div *ngIf="cargaCompleta" class="container-report text-center">
+        <div class="w-100">
+            <div class="size-cards-report" *ngFor="let articulo of articulos; let i = index" >
+                <app-tarjeta-producto [articulo]    = 'articulo'>
+                </app-tarjeta-producto>
+            </div> 
+        </div>
+    </div>
+</div>
+<div class="alert alert-danger text-center mt-3" *ngIf="cargaCompleta && articulos && articulos.length == 0">
+    <p class="">No hay registros</p>
+</div>

@@ -1,0 +1,66 @@
+.boton-Rojo {
+    color: #fff;
+    background-color: rgba(242, 53, 28, 1);
+    border-color: rgba(242, 53, 28, 1);
+}
+
+.iconColor {
+    color: white;
+    padding-right: 5px;
+}
+
+.inconAzul {
+    color: #17a2b8;
+}
+
+.border {
+    border: #9b9b9b;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+.btn-circle {
+    color: #fff;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
+
+hr {
+    height: 1px;
+    background-color: #9b9b9b;
+}
+
+.textoRed {
+    color: rgba(242, 53, 28, 1);
+}
+
+#contendorForm {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.tamanioImg {
+    width: 25%;
+    height: 7%
+}

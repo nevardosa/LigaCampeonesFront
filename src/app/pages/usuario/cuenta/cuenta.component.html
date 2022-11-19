@@ -1,0 +1,237 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 border mt-4">
+            <h5 class="font-weight-bold text-center mt-2"> MI CUENTA </h5>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-9">
+            <form class="mt4" [formGroup]="formaRegistro" (ngSubmit)="actualizarUsuario()">
+                <div class="row">
+                    <div class="col-md-6 mt-4 mb-4 formularioStyle lineRight">
+                        <div class="form-group row ">
+                            <img src="assets/img/planilla.png" class="tamanioImg">
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputNombre" class="col-sm-4 col-form-label">Nombre:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="inputNombre"
+                                    formControlName="nombre" [class.is-invalid]="NombreNoValido" disabled>
+                                <small *ngIf="NombreNoValido" class="text-danger">Debe ingresar nombres</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputApellido" class="col-sm-4 col-form-label">Apellidos:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="inputApellido"
+                                    formControlName="apellido" [class.is-invalid]="ApellidoNoValido" disabled>
+                                <small *ngIf="ApellidoNoValido" class="text-danger">Debe ingresar apellidos</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputDocumento" class="col-sm-4 col-form-label">Cédula:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="inputDocumento"
+                                    formControlName="documento" [class.is-invalid]="DocumentoNoValido" disabled>
+                                <small *ngIf="DocumentoNoValido" class="text-danger">Debe ingresar #Cédula</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputCanal" class="col-sm-4 col-form-label">Canal:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm mt-2" formControlName="canal"
+                                    [class.is-invalid]="CanalNoValido" [hidden]="muestraSelectCanales">
+                                    <option value="" selected>Seleccione un canal</option>
+                                    <option *ngFor="let item of canales" [value]="item">{{item}}</option>
+                                </select>
+                                <input type="text" class="form-control form-control-sm" id="inputCanal"
+                                    formControlName="canal" [class.is-invalid]="CanalNoValido" disabled
+                                    [hidden]="!muestraSelectCanales">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Perfil:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" 
+                                    formControlName="perfil" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Tipo Contrato:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" 
+                                    formControlName="tipoContrato" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-form-label">
+                                <label class="switch">
+                                    <input [disabled]="isDisabled" type="checkbox" checked="true">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <label class="labelGris">Acepto los <a href="" (click)="cargarTerminosYCondiciones()"
+                                        data-toggle="modal" data-target="#modalTyC">términos y
+                                        condiciones</a></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6  mt-4 formularioStyle">
+                        <label class="mt-2 text-primary">Puedes actualizar los siguientes datos:</label>
+                        <div class="form-group row">
+                            <label for="inputCorreo" class="col-sm-4 col-form-label">Correo:</label>
+                            <div class="col-sm-8">
+                                <input type="text" readonly class="form-control form-control-sm " id="inputCorreo"
+                                    formControlName="correo" [class.is-invalid]="CorreoNoValido">
+                                <small *ngIf="CorreoNoValido" class="text-danger">Debe ingresar un correo valido</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputCelular" class="col-sm-4 col-form-label labelPad">Número celular:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control " formControlName="numeroCelular"
+                                    [class.is-invalid]="NumeroCelularNoValido">
+                                <!-- <small *ngIf="NumeroCelularNoValido" class="text-danger">Debe ingresar # celular con 10
+                                    caracteres máximo</small> -->
+                            </div>
+                        </div>
+                        <div *ngIf="NumeroCelularNoValido" class="text-primary danger my-2 py-2">
+                            <div *ngFor="let validation of count_validation_messages.celular">
+                                <div style="font-size: smaller !important;"
+                                    *ngIf="formaRegistro.get('numeroCelular').hasError(validation.type) && (formaRegistro.get('numeroCelular').dirty || formaRegistro.get('numeroCelular').touched)">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputDepartamento" class="col-sm-4 col-form-label">Departamento:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm " id="inputDepartamento"
+                                    formControlName="departamento" [class.is-invalid]="DepartamentoNoValido"
+                                    (change)="PintarCiudad()">
+                                    <option *ngFor="let item of departamentoArray" [value]="item.codigoDane">
+                                        {{item.nombreLugar}}</option>
+                                </select>
+                                <small *ngIf="DepartamentoNoValido" class="text-danger">Debe seleccionar
+                                    departamento</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputCiudad" class="col-sm-4 col-form-label">Ciudad:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm " id="inputCiudad" formControlName="ciudad"
+                                    [class.is-invalid]="CiudadNoValido">
+                                    <option *ngFor="let item of ciudadArray" [value]="item.codigoDane">
+                                        {{item.nombreLugar}}</option>
+                                </select>
+                                <small *ngIf="CiudadNoValido" class="text-danger">Debe seleccionar ciudad</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputDireccion" class="col-sm-4 col-form-label">Dirección:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm " id="inputDireccion"
+                                    formControlName="direccion" [class.is-invalid]="DireccionNoValido">
+                                <small *ngIf="DireccionNoValido" class="text-danger">Debe ingresar una dirección</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputBarrio" class="col-sm-4 col-form-label">Barrio:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm " id="inputBarrio"
+                                    formControlName="barrio" [class.is-invalid]="BarrioNoValido">
+                                <small *ngIf="BarrioNoValido" class="text-danger">Debe ingresar un barrio</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputFnacimiento" class="col-sm-4 col-form-label">Fecha Nacimiento:</label>
+                            <div class="col-sm-8">
+                                <mat-form-field color="warn" appearance="fill" [style]="{ 'width' : '100%'}">
+                                    <input matInput [max]="maxDate" [matDatepicker]="picker"
+                                        formControlName="FNacimiento" readonly placeholder="Fecha Nacimiento"
+                                        [class.is-invalid]="FNacimientoNoValido">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                                <small *ngIf="FNacimientoNoValido" class="text-danger">Debe ingresar fecha de
+                                    nacimiento</small>
+                                <small *ngIf="menorEdad" class="text-danger">El usuario debe ser mayor de
+                                    edad</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputClave" class="col-sm-4 col-form-label">Clave:</label>
+                            <div class="col-sm-8 input-group">
+                                <input [type]="fieldTextTypeClave ? 'text' : 'password'" class="form-control"
+                                    formControlName="clave" [class.is-invalid]="ClaveNoValido" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="fa" [ngClass]="{'fa-eye-slash': !fieldTextTypeClave,
+                                            'fa-eye': fieldTextTypeClave
+                                          }" (click)="toggleFieldTextTypeClave()"></i>
+                                    </span>
+                                </div>
+                                <div class="col-sm-12 input-group">
+                                    <small *ngIf="fieldTextTypeClave && !cambioClave">*Ejemplo "atjw=860*"
+                                        de la estructura de la clave.</small>
+                                    <small *ngIf="ClaveNoValido" class="text-danger">Clave no valida</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputRepetir" class="col-sm-4 col-form-label">Repetir clave:</label>
+                            <div class="col-sm-8 input-group">
+                                <input [type]="fieldTextTypeRptClave ? 'text' : 'password'" class="form-control"
+                                    formControlName="repetirClave" [class.is-invalid]="RepetirClaveNoValido" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="fa" [ngClass]="{'fa-eye-slash': !fieldTextTypeRptClave,
+                                            'fa-eye': fieldTextTypeRptClave}"
+                                            (click)="toggleFieldTextTypeRptClave()"></i>
+                                    </span>
+                                </div>
+                                <div class="col-sm-12 input-group">
+                                    <small *ngIf="fieldTextTypeRptClave && !cambioRepClave">*Ejemplo "atjw=860*"
+                                        de la estructura de la clave.</small>
+                                    <small *ngIf="RepetirClaveNoValido" class="text-danger">Las claves no
+                                        coinciden</small>
+                                    <label Class="labelGris">(La clave debe ser alfa numérica de 6
+                                        dígitos que no tenga letras ni números consecutivos)</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button [disabled]="!formaRegistro.valid || RepetirClaveNoValido" type="submit"
+                            class="btn boton-Rojo btn-block mt-2 mb-4">Actualizar datos</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalTyC" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close btnOn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container">
+                <div class="marginTyc">
+                    <div #divTyC>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

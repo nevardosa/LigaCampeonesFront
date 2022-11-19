@@ -1,0 +1,22 @@
+.borderStyle {
+    border-bottom: 2px solid #6666666b;
+}
+
+.titleStyle {
+    margin-bottom: 4%;
+}
+
+::ng-deep .mat-ink-bar {
+    background-color: #ee2925 !important;
+}
+
+
+table {
+    width: 100%;
+}
+
+th, td {
+    overflow: hidden;
+    width: 200px;
+    text-overflow: ellipsis;    
+}

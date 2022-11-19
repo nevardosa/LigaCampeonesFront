@@ -1,0 +1,309 @@
+ <!-- FORMULARIO DE CREACION PQR-->
+<div *ngIf="pqr == undefined" class="container">
+    <div class="col-md-12 border mt-4">
+        <h3 Class="font-weight-bold text-center mt-2">CREAR<span class="colorTitle font-weight-bold">SOLICITUD</span></h3>
+    </div>
+    <div class="col-md-12 row justify-content-end">
+        <div class="col-lg-2 col-md-3 mt-4 no-padding">
+            <button (click)="redireccionarAListadoPQR()" class="btn btn-danger float-right boton-Rojo btn-block btn-sm" >
+                 atras
+            </button>
+        </div>
+    </div>
+
+
+    <div class=" col-md-12" >
+        
+        <div class="row">
+            <div class="col-6 col-md-6  formularioStyle lineRight" style="padding-left: 5%;">
+                <div class="form-group row justify-content-center">
+                    <img src="assets/img/planilla.png" style=" max-width: 40%;height: auto;">
+                </div>
+                <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                    <label  class="col-sm-4 col-form-label">Nombre:</label>
+                    <label  class="col-sm-4 col-form-label font-weight">{{ nombreUsuario }}</label>
+                    <hr>
+                </div>
+                
+                <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                    <label  class="col-sm-4 col-form-label">Cedula:</label>
+                    <label  class="col-sm-4 col-form-label font-weight">{{ v_cedulaUsuario }}</label>
+                    <hr>
+                </div>
+            </div>    
+            <div class="col-md-6 formularioStyle " style="padding-right: 5%;">
+                <form class="mt4"  [formGroup]="formularioCreacionPQR" (ngSubmit)="crearPQR()">
+                    <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label letra-color-gris">Tipo de solicitud</label>
+                        <div class="col-sm-10">
+                            <select class="form-control form-control-sm mt-2" formControlName="tipoSolicitud"
+                                [class.is-invalid]="tipoSolicitud" >
+                                <option value="" selected>Seleccione tipo de solicitud</option>
+                                <option *ngFor="let item of listTipoSolicitud" [value]="item">{{item}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label letra-color-gris">Producto</label>
+                        <div class="col-sm-10">
+                            <select class="form-control form-control-sm mt-2" formControlName="idCategoria"
+                                [class.is-invalid]="idCategoria" (change)="cargarMotivos()">
+                                <option value="" selected>Seleccione producto</option>
+                                <option *ngFor="let item of listaCategorias" [value]="item.idCategoria">{{item.nombreCategoria}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label  class="col-sm-2 col-form-label letra-color-gris">Motivo</label>
+                        <div class="col-sm-10">
+                        <select class="form-control form-control-sm mt-2" formControlName="motivo"
+                            [class.is-invalid]="motivo" >
+                            <option value="" selected>Seleccione motivo</option>
+                            <option *ngFor="let item of listaMotivos" [value]="item">{{item}}
+                            </option>
+                        </select>
+                        </div>
+                    </div>       
+
+                    <div class="w-100">
+                        <label class="col-sm-4 col-form-label p-0 letra-color-gris">Explica tu solicitud:</label>
+                        <textarea class="form-control" rows="6" formControlName="descripcion"></textarea>
+
+                        <div class="form-group ">
+                            <label class="w-100 letra-color-gris"  >Imagenes o documentos anexos:</label>
+                            <span class="w-100 letra-color-gris" >archivos en formato .jpg, gif, png, doc, xls, txt, pdf o zip</span>
+                            <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+                                <span>{{ progressInfo.fileName }}</span>
+                                <div class="progress">
+                                  <div
+                                    class="progress-bar progress-bar-info progress-bar-striped"
+                                    role="progressbar"
+                                    attr.aria-valuenow="{{ progressInfo.value }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    [ngStyle]="{ width: progressInfo.value + '%' }"
+                                  >
+                                    {{ progressInfo.value }}%
+                                  </div>
+                                </div>
+                            </div>
+                            <label class="btn btn-default">
+                                <input type="file" multiple (change)="selectFiles($event)" />
+                            </label>
+
+
+                            <!-- <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-link btn-file">
+                                        Cargar archivo <input accept=".jpg,.gif,.png,.jpeg,.doc, .xls, .xlsx, .txt, .pdf, .ZIP, .rar" class="hidden"  type="file"  multiple (change)="selectFiles($event)">
+                                    </span>
+                                </label>
+                                <input class="form-control"  readonly="readonly" type="text" >
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <label class="switch">
+                                <input type="checkbox" formControlName="aceptoTerminos"
+                                    [class.is-invalid]="aceptoTerminos">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-10">
+                            <label class="labelGris">Acepto los <a href="#" data-toggle="modal"
+                                    data-target="#modalTyC">términos y condiciones</a></label>
+                        </div>
+                    </div>
+                    <button [disabled]="formularioCreacionPQR.invalid || aceptaTerminos() == false" type="submit"
+                        class="btn boton-Rojo btn-block mt-2 mb-4">Enviar</button>
+
+                </form>
+            </div>
+        </div>
+
+        
+    </div>   
+</div>
+ <!--FINNNN  FORMULARIO DE CREACION PQR-->
+
+
+ <!-- Modal -->
+ <div class="modal fade" id="modalTyC" tabindex="-1" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+     <div class="modal-content">
+         <div class="modal-header">
+             <button type="button" class="close btnOn" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+         <div class="container">
+             <div class="marginTyc">
+                 <div #divTyC>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+</div>
+
+
+<div class="container"  *ngIf="pqr != undefined ">
+    <div class="row" *ngIf="cargacompleta">
+        <div class="col-md-12 border mt-4">
+            <h3 Class="font-weight-bold text-center mt-2">DETALLE Y RESPUESTA<span class="colorTitle font-weight-bold">SOLICITUDES</span></h3>
+        </div>
+        <div class="col-md-12 row justify-content-end">
+            <div class="col-lg-2 col-md-3 mt-4 no-padding">
+                <button (click)="redireccionarAListadoPQR()" class="btn btn-danger float-right boton-Rojo btn-block btn-sm" >
+                     atras
+                </button>
+            </div>
+        </div>
+        <div class="col-12">
+           
+                <div class="row">
+                    <!-- INFORMACION INICIAL DE LA PQR -->
+                    <div class="col-md-6 mt-4 mb-4 formularioStyle lineRight" *ngIf="pqr != undefined ">
+                        <div class="form-group row ">
+                            <img src="assets/img/planilla.png" class="tamanioImg">
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label  class="col-sm-4 col-form-label">Nombre:</label>
+                            <label  class="col-sm-4 col-form-label font-weight">{{ pqr.nombre }}</label>
+                            <hr>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Apellidos:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.apellido }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Cédula:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.cedula_usuario }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Canal:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.canal }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Tipo de solicitud:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.tipoSolicitud }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Producto:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.nombreCategoria }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Motivo:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.motivo }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">solicitud:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.descripcionSolicitud }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">fecha solicitud:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.fechaRegistro }}</label>
+                        </div>
+                        <div class="form-group row" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label">Anexos:</label>
+                            <a class="texto" (click)="descargarArchivoAdjunto(null)">
+                                Descargar todos los archivos
+                                <i class="fas fa-user-edit btn-sm " style="color:#f53201;"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- FORMULARIO DE RESPUESTA PQR -- EDICION -->
+                    <div class="col-6 col-md-6  mt-4 formularioStyle" *ngIf="pqr && pqr.idPQR">
+                        <div class="form-group row  p-3" style="border-bottom: 1px solid #cad6e1">
+                            <label class="col-sm-4 col-form-label"># de solicitud - ID:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.idPQR }}</label>
+                        </div>
+
+                        <div class="form-group row  p-3" >
+                            <label class="col-sm-4 col-form-label">estado de la solicitud:</label>
+                            <label class="col-sm-4 col-form-label font-weight">{{ pqr.estado }}</label>
+                        </div>
+
+                        <!-- RESPUESTAS QUE HA TENIDO LA PQR -->
+                        <div style="background: #8080801f;" class="p-3">
+                            <div *ngFor="let item of listaPQR" >
+                                <label class="font-weight" >{{ item.fechaRegistro}}  </label> | Respuesta:
+                                <p>{{ item.descripcionRespuesta}}</p>
+                                <label class="col-form-label font-weight w-100" *ngFor="let obj of obtenerlistaDocumentosAdjuntosPQR(item)">
+                                    <a class="texto" (click)="descargarArchivoAdjunto(obj)">
+                                        <i class="fas fa-user-edit btn-sm " style="color:#f53201;"></i>
+                                        {{ obj }}
+                                    </a>
+                                </label>
+                            </div>
+                            
+                            <br>
+                           
+                        </div>
+                        <!-- FINNNN    RESPUESTAS QUE HA TENIDO LA PQR -->
+                        <br>
+                        <!-- RESPUESTA DE LA PQR -->
+                        <form class="mt4"  [formGroup]="formulario" (ngSubmit)="responderPQR()" *ngIf="puedeResponderPQR()">
+                            
+                            <div *ngIf="!esPerfilAdministrador() && puedeResponderPQR()" >
+                                <label class="font-weight">¿Está conforme con la respuesta a esta solicitud?</label>
+                                <div class="row mt-2">
+                                    <div class="col-md-2">
+                                        <label class="switch">
+                                            <input type="checkbox" formControlName="cerrarPQR">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <label class="labelGris">Sí selecciona la opcion,acepta la respuesta del administrador</label>
+                                    </div>
+                                </div>
+                            </div>    
+
+                            <div class="w-100 p-3" style="background: #8080801f;">
+                                <label class="col-sm-4 col-form-label p-0">Respuesta:</label>
+                                <textarea class="form-control" rows="6" formControlName="descripcionRespuesta"></textarea>
+
+                                <div class="form-group ">
+                                    <label class="w-100" >Imagenes o documentos anexos:</label>
+                                    <span class="w-100" >archivos en formato .jpg, gif, png, doc, xls, txt, pdf o zip</span>
+                                    <div *ngFor="let progressInfo of progressInfos" class="mb-2">
+                                        <span>{{ progressInfo.fileName }}</span>
+                                        <div class="progress">
+                                          <div
+                                            class="progress-bar progress-bar-info progress-bar-striped"
+                                            role="progressbar"
+                                            attr.aria-valuenow="{{ progressInfo.value }}"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                            [ngStyle]="{ width: progressInfo.value + '%' }"
+                                          >
+                                            {{ progressInfo.value }}%
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <label class="btn btn-default">
+                                        <input type="file" multiple (change)="selectFiles($event)" />
+                                    </label>
+                                </div>
+
+                                <button [disabled]="!formulario.valid" type="submit"
+                                class="btn boton-Rojo btn-block mt-2 mb-4">Responder</button>
+
+                            </div>
+                        </form>
+                    </div>
+                     <!-- FINNNNN    FORMULARIO DE RESPUESTA PQR -- EDICION -->
+                </div>
+            
+
+        </div>
+    </div>
+</div>

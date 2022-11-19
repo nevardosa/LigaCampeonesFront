@@ -1,0 +1,38 @@
+.labelGris {
+    color: rgba(142, 142, 142, 1);
+    font-size: 12px;
+}
+
+.boton-Rojo {
+    color: #fff;
+    background-color: rgba(242, 53, 28, 1);
+    border-color: rgba(242, 53, 28, 1);
+}
+
+.texto {
+    color: rgba(242, 53, 28, 1);
+}
+
+#contendorForm {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+.formularioStyle {
+    padding: 3%;
+    padding-top: 7%;
+}
+
+.iconColor {
+    color: white;
+    padding-left: 5px !important;
+}
+
+.iconColorRed {
+    color: #ef3829;
+    padding-left: 5px !important;
+    font-size: 30px;
+}
+
+.colorButtonDanger {
+    background: #ef3829;
+}

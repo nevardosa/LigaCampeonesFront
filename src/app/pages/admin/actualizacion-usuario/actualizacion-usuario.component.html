@@ -1,0 +1,316 @@
+<div class="container mt-4 mb-4" *ngIf="cargaCompleta">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h4>MÓDULO<span class="colorTitle">ACTUALIZACIÓN DE DATOS BASE LIGA</span></h4>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="">
+            <button type="submit" class="btn boton-Rojo btn-block mb-4"
+                routerLink="/administrador/consultarInformacion">
+                << Regresar a consulta</button>
+        </div>
+        <div class="col-md-12">
+            <form [formGroup]="formaUsuario" (ngSubmit)="guardar()">
+                <div class="container">
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="inputNombre" class="col-sm-4 col-form-label">Nombres:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" formControlName="nombres"
+                                        [class.is-invalid]="NombreNoValido">
+                                    <small *ngIf="NombreNoValido" class="text-danger">Debe ingresar nombre</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputApellido" class="col-sm-4 col-form-label">Apellidos:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" formControlName="apellido"
+                                        [class.is-invalid]="ApellidoNoValido">
+                                    <small *ngIf="ApellidoNoValido" class="text-danger">Debe ingresar apellido</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="staticCedula" class="col-sm-4 col-form-label">Cédula:</label>
+                                <div class="col-sm-8 texto">
+                                    <input type="text" class="form-control" formControlName="cedula" type="hidden">
+                                    <p class="texto">{{ getCedula() }}</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="inputFnacimiento" class="col-sm-4 col-form-label">Fecha Nacimiento:</label>
+                                <div class="col-sm-8">
+                                    <mat-form-field color="warn" appearance="fill" [style]="{ 'width' : '100%'}">
+                                        <input matInput [max]="maxDate" [matDatepicker]="picker"
+                                            formControlName="FNacimiento" readonly placeholder="Fecha Nacimiento"
+                                            [class.is-invalid]="FNacimientoNoValido">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                    <small *ngIf="FNacimientoNoValido" class="text-danger">Debe ingresar fecha de
+                                        nacimiento</small>
+                                    <small *ngIf="menorEdad" class="text-danger">El usuario debe ser mayor de
+                                        edad</small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="inputCanal" class="col-sm-4 col-form-label">Canal:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control form-control-sm" formControlName="canal"
+                                        [class.is-invalid]="CanalNoValido">
+                                        <option value="" selected>Seleccione un canal</option>
+                                        <option *ngFor="let item of canales" [value]="item">{{item}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <small *ngIf="CanalNoValido" class="text-danger">Debe seleccionar el canal</small>
+
+                            <div class="form-group row">
+                                <label for="inputEmail" class="col-sm-4 col-form-label">Correo:</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" formControlName="correo"
+                                        [class.is-invalid]="CorreoNoValido">
+                                    <small *ngIf="CorreoNoValido" class="text-danger">Debe ingresar un correo
+                                        valido</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputCelular" class="col-sm-4 col-form-label">Número de celular:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" formControlName="celular"
+                                        [class.is-invalid]="NumeroCelularNoValido">
+                                    <!-- <small *ngIf="NumeroCelularNoValido" class="text-danger">Debe ingresar # celular</small> -->
+                                </div>
+                            </div>
+                            <div *ngIf="NumeroCelularNoValido">
+                                <div *ngFor="let validation of count_validation_messages.celular">
+                                    <small class="text-danger"
+                                        *ngIf="validarError('celular', validation.type)">{{validation.message}}</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="activo" class="col-sm-4 col-form-label">Activo:</label>
+                                <div class="col-sm-8">
+                                    <label class="switch">
+                                        <input type="checkbox" checked="true" formControlName="activo">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Perfil:</label>
+                                <div class="col-sm-8 texto">
+                                    <input type="text" class="form-control" type="hidden">
+                                    <p class="texto">{{ getPerfil() }}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label  class="col-sm-4 col-form-label">Tipo contrato:</label>
+                                <div class="col-sm-8 texto">
+                                    <input type="text" class="form-control"  type="hidden">
+                                    <p class="texto">{{ getTipoContrato() }}</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="inputDepartamento"
+                                    class="col-sm-4 col-form-label labelPad">Departamento:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="inputDepartamento" formControlName="departamento"
+                                        [class.is-invalid]="DepartamentoNoValido"
+                                        (change)="cargarCiudades(getDepartamento())">
+                                        <option value="" selected>Seleccione un departamento</option>
+                                        <option *ngFor="let item of departamentoArray" [value]="item.codigoDane">
+                                            {{item.nombreLugar}}</option>
+                                    </select>
+                                    <small *ngIf="DepartamentoNoValido" class="text-danger">Debe seleccionar
+                                        departamento</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputCiudad" class="col-sm-4 col-form-label labelPad">Ciudad:</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control mt-2" id="inputCiudad" formControlName="idCiudad"
+                                        [class.is-invalid]="CiudadNoValido">
+                                        <option value="" selected>Seleccione una ciudad</option>
+                                        <option *ngFor="let item of ciudadArray" [value]="item.codigoDane">
+                                            {{item.nombreLugar}}</option>
+                                    </select>
+                                    <small *ngIf="CiudadNoValido" class="text-danger">Debe seleccionar ciudad</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputDireccion" class="col-sm-4 col-form-label labelPad">Dirección:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputDireccion"
+                                        formControlName="direccion" [class.is-invalid]="DireccionNoValido">
+                                    <small *ngIf="BarrioNoValido" class="text-danger">Debe ingresar barrio</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputBarrio" class="col-sm-4 col-form-label labelPad">Barrio:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputBarrio" formControlName="barrio"
+                                        [class.is-invalid]="BarrioNoValido">
+                                    <small *ngIf="BarrioNoValido" class="text-danger">Debe ingresar barrio</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputClave" class="col-sm-4 col-form-label labelPad ">Clave:</label>
+                                <div class="col-sm-8 input-group">
+                                    <input [type]="fieldTextTypeClave ? 'text' : 'password'" class="form-control"
+                                        formControlName="clave" [class.is-invalid]="ClaveNoValido" />
+                                    <div class="input-group-append" (click)="toggleFieldTextTypeClave()">
+                                        <span class="input-group-text">
+                                            <i class="fa" [ngClass]="{'fa-eye-slash': !fieldTextTypeClave,
+                                                'fa-eye': fieldTextTypeClave
+                                              }"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-12 input-group">
+                                        <small *ngIf="fieldTextTypeClave && !cambioClave">*Ejemplo "atjw=860*"
+                                            de la estructura de la clave.</small>
+                                        <small *ngIf="ClaveNoValido" class="text-danger">Clave no valida</small>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputRepetir" class="col-sm-4 col-form-label labelPad">Repetir
+                                    clave:</label>
+                                <div class="col-sm-8 input-group">
+                                    <input [type]="fieldTextTypeRptClave?'text':'password'" class="form-control"
+                                        formControlName="repetirClave" [class.is-invalid]="RepetirClaveNoValido">
+                                    <div class="input-group-append" (click)="toggleFieldTextTypeRptClave()">
+                                        <span class="input-group-text">
+                                            <i class="fa" [ngClass]="{'fa-eye-slash': !fieldTextTypeRptClave,
+                                                'fa-eye': fieldTextTypeRptClave
+                                          }"></i>
+                                        </span>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div>
+                                            <small *ngIf="fieldTextTypeRptClave && !cambioRepClave">*Ejemplo "atjw=860*"
+                                                de la estructura de la clave.</small>
+                                        </div>
+                                        <div>
+                                            <small *ngIf="RepetirClaveNoValido" class="text-danger">Las claves no
+                                                coinciden</small>
+                                        </div>
+                                        <label Class="labelGris">(La clave debe ser alfa numérica de minimo 6 caracteres
+                                            que no tengaletras ni números consecutivos)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4 ml-3">
+                                    <label class="switch">
+                                        <input [disabled]="isDisabled" type="checkbox" checked="true">
+                                        <span class=" slider round "></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <label class="labelGris">Acepto los <a href="#" data-toggle="modal"
+                                            data-target="#modalTyC">términos y condiciones</a></label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn boton-Rojo btn-block mb-4"
+                                [disabled]="formaUsuario.invalid">Actualizar Datos</button>
+
+
+                            <a role="button" class="btn boton-Azul btn-block" href="#myModal" data-toggle="modal">
+                                <i class="fa fa-clock-o iconColorAzul" aria-hidden="true"></i>Descargar LOG de Cambios
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalTyC" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close btnOn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container">
+                <div class="marginTyc">
+                    <div #divTyC>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Reporte Cambios-->
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header btn-color padding">
+                <h2 class="color-blanco">Log de cambios</h2>
+                <button type="button" class="color-blanco close btnOn" data-dismiss="modal" aria-label="Close">
+                    <h3>
+                        <span class="color-blanco" aria-hidden="true">&times;</span>
+                    </h3>
+                </button>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="font-weight-bold">Por favor seleccione el rango de fechas para el reporte.</p>
+                        <form [formGroup]="formFechas">
+                            <div class="row">
+                                <div class="col-sm-1 w-100 p-3">
+                                    <label for="activoReport"><p class="font-weight-bold">Estado:</p></label>
+                                </div>
+                                <div class="col-sm-3 w-100 p-3">
+                                    <select class="form-control form-control-sm" formControlName="activoReport">
+                                        <option value="" selected>Seleccione un estado</option>
+                                        <option *ngFor="let item of lstEstado" [value]="item">{{item}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <mat-form-field color="warn" appearance="fill"
+                                        class="text-center d-flex justify-content-start">
+                                        <mat-label><strong>Rango de Fechas Reporte</strong></mat-label>
+                                        <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker]="picker">
+                                            <input matStartDate placeholder="Fecha Inicial"
+                                                formControlName="fechaInicio">
+                                            <input matEndDate placeholder="Fecha Final" formControlName="fechaFin">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-outline-comp btn-block btn-hg" (click)="limpiarForm(formFechas.value)">
+                                        <i class="far fa-trash-undo icono-Comp ">
+                                            Limpiar
+                                        </i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>                    
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn boton-Rojo mx-3 my-3"
+                (click)="dercargarHistoricoUsuario(formFechas.value)">Descargar</button>
+        </div>
+    </div>
+</div>

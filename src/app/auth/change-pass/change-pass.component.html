@@ -1,0 +1,37 @@
+<div class="fondo" *ngIf="cargaCompleta" [ngStyle]="{'background-image': 'url(' + inicioImg + ')'}">
+    <div class="container">
+        <div class="row h-50">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 mt-4 formularioStyle">
+                <form class="m-4" [formGroup]="formaCambioContrasena" (ngSubmit)="cambioContrasena()">
+                    <label class="labelStyle"><b>Ingresa nueva contraseña</b></label>
+                    <div class="form-group inner-addon left-addon">
+                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                        <input [type]="mostrarPass" class="form-control" placeholder="Nueva Contraseña" formControlName="pass"  [ngClass]="verifyPasswords('pass', formaCambioContrasena)"
+                            [class.is-invalid]="passNoValido">
+                        <!-- <small *ngIf="passNoValido" class="text-danger">Debe ingresar su contraseña</small> -->
+                    </div>
+                    <div class="form-group inner-addon left-addon">
+                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                        <input [type]="mostrarPass" class="form-control" placeholder="Repetir Contraseña" formControlName="repeatPass"
+                            [class.is-invalid]="passNoValido" [ngClass]="verifyPasswords('repeatPass', formaCambioContrasena)">
+                        <small *ngIf="!validatePasswordsMatch(formaCambioContrasena)" class="text-danger">Contraseña no coincide</small>
+                    </div>
+
+                    <div class="form-check text-left">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" (click)="mostrarPassword()">
+                        <label class="form-check-label" for="exampleCheck1">Mostrar contraseña</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-block colorButtonDanger">Cambiar Contraseña</button>
+                </form>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>       
+    </div>
+</div>

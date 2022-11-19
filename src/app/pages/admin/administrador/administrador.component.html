@@ -1,0 +1,119 @@
+<div>
+    <div class="container mt-4 mb-4">
+        <div class="row">
+            <div class="col text-right">
+                <button type="button" class="btn btn-danger colorButtonDanger col-lg-2 col-md-2 col-sm-2"  routerLink="/administrador/administrador/nuevo">
+                    <i class="fa fa-plus iconColor"></i>
+                    Crear Administrador
+                </button>
+            </div>
+        </div>
+        <br>
+       
+        <form class="form-inline"  [formGroup]="formConsulta" (ngSubmit)="buscar()">
+            <div class="col-md-2 ">
+                <select class="form-control form-control-sm" formControlName="activo" >
+                    <option value="" selected>Seleccione un estado</option>
+                    <option *ngFor="let item of lstEstado" [value]="item">{{item}}</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+              <input type="text"  class="form-control w-100"  placeholder="Nombre" formControlName="nombres" >
+            </div>
+            <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+                <input type="text"  class="form-control w-100"  placeholder="apellido" formControlName="apellido" >
+              </div>
+            <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+              <input type="text" class="form-control w-100" placeholder="cedula" formControlName="cedula">
+              <div *ngIf="filtroCedulaNoValido">
+                <div *ngFor="let validation of count_validation_messages.cedula">
+                    <small  class="text-danger" *ngIf="validarError(formConsulta,'cedula', validation.type)">{{validation.message}}</small>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+                <input type="text" class="form-control w-100" placeholder="correo" formControlName="correo">
+                <div *ngIf="filtroCorreoNoValido">
+                    <div *ngFor="let validation of count_validation_messages.correo">
+                        <small  class="text-danger" *ngIf="validarError(formConsulta,'correo', validation.type)">{{validation.message}}</small>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="form-group btn btn-danger colorButtonDanger col-lg-1 col-md-1 col-sm-2"  [disabled]="formConsulta.invalid">
+                <i class="fa fa-search iconColor"></i>
+                Buscar
+            </button>
+            <button type="button" class="form-group btn btn-danger colorButtonDanger col-lg-1 col-md-1 col-sm-2"  [disabled]="formConsulta.invalid" (click)="limpiarBusqueda()">
+                <i class="fa fa-refresh iconColor"></i>
+                 Limpiar
+            </button>
+        </form>
+        <br>
+    
+        <div class="alert alert-warning text-center mt-3" *ngIf="cargacompleta && listaUsuariosAdministradores && listaUsuariosAdministradores.length == 0">
+            <h4 class="alert-heading">No hay registros</h4>
+            <p>
+                <i class="fa fa-exclamation fa-2x"></i>
+            </p>
+        </div>
+        <div class="row" *ngIf="cargacompleta && listaUsuariosAdministradores &&  listaUsuariosAdministradores.length > 0">
+            <div class="col-md-12 text-center">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="9">
+                                <h5>LISTA DE ADMINISTRADORES</h5>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>No de Documento</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Correo</th>
+                            <th>Detalles</th>
+                            <th>Activo</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let value of listaUsuariosAdministradores;  let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ value.nombres }}</td>
+                            <td>{{ value.apellido }}</td>
+                            <td>{{ value.cedula }}</td>
+                            <td>{{ value.fecha_nacimiento }}</td>
+                            <td>{{ value.correo }}</td>
+                            
+                            <td><a class="texto" (click)="editarUsuario(value)">
+                                Editar
+                                <i class="fas fa-user-edit btn-sm " style="color:#f53201;"></i>
+                            </a></td>
+                            <td>
+                                <div class="col-sm-2" >
+                                    <label class="switch">
+                                    <input type="checkbox" [disabled]="isDisabled" [checked]='value.activo==0' (change)="cambioEstado($event,item)">                    
+                                    <span class="slider round"></span> 
+                                    </label>
+                                </div>
+                            </td>
+                            <td *ngIf="permitirEliminar(value.cedula)">
+                                <a (click)="delete(value)">
+                                    <i class="fa fa-times-circle iconColorRed" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td *ngIf="!permitirEliminar(value.cedula)">
+                                <a >
+                                    <i class="fa fa-lock size-icon  icon-color-azul" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>

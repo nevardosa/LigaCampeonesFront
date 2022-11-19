@@ -1,0 +1,240 @@
+<div class="container" style="font-size: 15px">
+    <div class="row p-3">
+        <div class="col-lg-12 text-center align-middle margin-bannerText">
+            <h1 class=" pull-center">MÓDULO DE <strong><span class="colorTitle">REFERIDOS</span></strong>
+            </h1>
+        </div>
+    </div>
+
+    <div class="container" *ngIf="carguePerfilesCompleto">       
+        <div class="row div-space2">
+            <div class="container">
+                <div class="div-space2 ml-5">
+                    <button type="button" class="btn-lg btn btn-outline-info" id="modalReport" data-toggle="modal"
+                        data-target="#reporte">
+                        <i class="fas fa-gears fa-2x mr-2" style="color: #138496;"></i>
+                        Generar Reporte Referidos</button>
+                </div>
+            </div>
+            <div class="col-md-4 div-referido div-interno">
+                <span>
+                    <h4>
+                        <strong>
+                            Perfiles:
+                        </strong>
+                    </h4>
+                </span>
+
+                <form [formGroup]="formPerfil">
+
+                    <div class="container">
+                        <div class="div-space2">
+                            <button type="button" [disabled]="!formPerfil.valid || formPerfil.pristine"
+                                class="btn-block btn btn-danger btn-color" (click)="actualizarPerfiles()">
+                                Guardar</button>
+                        </div>
+                    </div>
+
+                    <div class="scroll">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Perfil</th>
+                                    <th class="text-center">Rerefidos</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="checksReferido">
+                                <tr *ngFor="let perfil of listaPerfiles, let i = index">
+                                    <td class="text-center">{{perfil.nombrePerfil}}
+                                    </td>
+                                    <td class="text-center">
+                                        <mat-checkbox class="margin" formControlName="{{i}}">
+                                        </mat-checkbox>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-4 div-referido div-interno">
+                <span>
+                    <h4>
+                        <strong>
+                            Productos de interés:
+                        </strong>
+                    </h4>
+                </span>
+                <div class="container">
+                    <div class="div-space2">
+                        <button type="button" class="btn-block btn btn-outline-info" id="modal" data-toggle="modal"
+                            data-target="#crear" (click)="activaModal(1)">Agregar</button>
+                    </div>
+                </div>
+                <div class="scroll">
+                    <table class="table mt-3">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Producto</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let producto of listaProductos;let i = index">
+                                <td class="text-center">{{producto}}
+                                </td>
+                                <td class="text-center">
+                                    <button class="fas fa-trash-alt fa-md text-danger btn-md btn btn-light"
+                                        (click)="eliminarProducto(i)"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="listaProductos.length == 0">
+                        <div class="col-lg-12 text-center align-middle">
+                            <h1 class=" pull-center"><span>No hay registros.</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 div-interno">
+                <span>
+                    <h4>
+                        <strong>
+                            Segmento:
+                        </strong>
+                    </h4>
+                </span>
+                <div class="container">
+                    <div class="div-space2">
+                        <button type="button" class="btn-block btn btn-outline-info" id="modal" data-toggle="modal"
+                            data-target="#crear" (click)="activaModal(2)">Agregar</button>
+                    </div>
+                </div>
+                <div class="scroll">
+                    <table class="table mt-3">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Segmento</th>
+                                <th class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let segmento of listaSegmentos;let i = index">
+                                <td class="text-center">{{segmento}}
+                                </td>
+                                <td class="text-center">
+                                    <button class="fas fa-trash-alt fa-md text-danger btn-md btn btn-light"
+                                        (click)="eliminarSegmento(i)"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div *ngIf="listaSegmentos.length == 0">
+                        <div class="col-lg-12 text-center align-middle">
+                            <h1 class=" pull-center"><span>No hay registros.</span>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="crear">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+            <div class="modal-content">
+                <div class="modal-header btn-color">
+                    <h2 *ngIf="modalActivo; else elseSegmento" class="color-blanco">CREAR PRODUCTO</h2>
+                    <ng-template #elseSegmento>
+                        <h2 class="color-blanco">CREAR SEGMENTO</h2>
+                    </ng-template>
+                    <button class="close btnOn" #closeCrear aria-label="close" type="button" data-dismiss="modal">
+                        <span>
+                            <h1 class="color-blanco">&times;</h1>
+                        </span>
+                    </button>
+                </div>
+                <form [formGroup]="form">
+                    <div class="row m-4">
+                        <div class="form-group col-md-4">
+                            <label *ngIf="modalActivo"> Nombre Producto:</label>
+                            <label *ngIf="!modalActivo">Nombre Segmento:</label>
+
+                        </div>
+
+
+                        <div class="col-md-8">
+                            <mat-form-field class="full-width-input">
+                                <input text="text" formControlName="nombre" matInput placeholder="Nombre" required />
+                                <mat-error *ngIf="isValido('nombre')">
+                                    {{getMensajeError('nombre')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="container">
+                    <div class="div-space2">
+                        <button type="button" class="btn-block btn btn-danger btn-color"
+                            [disabled]="!form.valid || form.pristine"
+                            (click)="guardar(form.value, modalActivo)">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="reporte">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+            <div class="modal-content">
+                <div class="modal-header btn-color">
+                    <h2 class="color-blanco">REPORTE CONSOLIDADO DE REFERIDOS</h2>
+
+                    <button class="close btnOn" #closeReporte aria-label="close" type="button" data-dismiss="modal">
+                        <span>
+                            <h1 class="color-blanco">&times;</h1>
+                        </span>
+                    </button>
+                </div>
+                <div class="container">
+                    <form [formGroup]="formFechas">
+                        <div class="center-content div-space p-3">
+
+                            <mat-form-field color="warn" appearance="fill">
+                                <mat-label><strong>Rango de Fechas Reporte</strong></mat-label>
+                                <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker]="picker">
+                                    <input matStartDate readonly formControlName="fechaInicio"
+                                        placeholder="Fecha Inicial">
+                                    <input matEndDate readonly formControlName="fechaFin" placeholder="Fecha Final">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                            <button *ngIf="validarFormFechas()" class="btn-block btn btn-danger btn-color ml-4"
+                                (click)="limpiarForm()">
+                                Borrar Fechas
+                            </button>
+                        </div>
+                    </form>
+
+
+
+                    <div class="p-3">
+                        <button type="button" class="btn-block btn btn-outline-info"
+                            (click)="decargarConsolidadoReferidos(formFechas.value)">
+                            <i class="fas fa-download fa-2x mr-2" style="color: #138496;"></i>
+                            Descargar consolidado de Referidos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

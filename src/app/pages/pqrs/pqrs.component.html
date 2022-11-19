@@ -1,0 +1,207 @@
+<div class="container mt-4 mb-4" *ngIf="activacion">
+    <div class="row">
+        <div class="col-lg-12 col-md-9 mt-4 text-center">
+            <h4 Class="font-weight-bold">MÓDULO<span class="colorTitle font-weight-bold">SOLICITUDES</span></h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <form class="col-lg-12 col-md-9 form-row" [formGroup]="formularioBusqueda">
+            <div class="table-bordered w-100">
+                <h4 class="p-2 colorTitle font-weight-bold ">Filtros</h4>
+                <div class="contenedorFiltros ">
+                    <div class="form-group" style="padding: 3px;" *ngIf="esPerfilAdministrador()">
+                        <input type="text" formControlName="cedulaUsuario" class="form-control w-100"
+                            placeholder="Cedula" />
+                    </div>
+                    <div class="form-group" style="padding: 3px;" *ngIf="esPerfilAdministrador()">
+                        <select class="form-control w-100" formControlName="canal">
+                            <option value='' selected>Seleccione un canal</option>
+                            <option *ngFor="let item of listCanales" [value]="item">
+                                {{item}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="padding: 3px;">
+                        <input type="text" formControlName="idPQR" class="form-control w-100"
+                            placeholder="Id Pqr" />
+                    </div>
+                    <div class="form-group" style="padding: 3px;">
+                        <select class="form-control w-100" id="inputTipoSolicitud" formControlName="tipoSolicitud">
+                            <option value='' selected>Seleccione un tipo de solicitud</option>
+                            <option *ngFor="let item of listTipoSolicitud" [value]="item">
+                                {{item}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="padding: 3px;">
+                        <select class="form-control w-100" id="inputCategoria" formControlName="idCategoria">
+                            <option value='' selected>Seleccione una categoria</option>
+                            <option *ngFor="let item of listaCategoriasActivas" [value]="item.idCategoria">
+                                {{item.nombreCategoria}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group"  style="padding: 3px;">
+                        <select class="form-control w-100" id="inputEstado" formControlName="estado">
+                            <option value="" selected>Seleccione el estado</option>
+                            <option value='CERRADA'>Cerradas</option>
+                            <option value='EN REVISION'>Revision</option>
+                            <option value='ATENDIDA'>Atendidas</option>
+                            <option value='RECIBIDA'>Recibidas</option>
+                        </select>
+                    </div>
+                    <div class="form-group p-0 m-auto" >
+                        <mat-form-field color="warn" appearance="standard" class="pull-right my-form-field">
+                            <mat-label><strong>Rango de Fechas Reporte</strong></mat-label>
+                            <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker]="picker">
+                                <input matStartDate placeholder="Fecha Inicial" formControlName="fechaRegistro">
+                                <input matEndDate placeholder="Fecha Final" formControlName="fechaRegistroFin">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="container-fluid d-flex justify-content-end mt-2">
+                    <button type="button" class="form-group btn btn-danger btn-red colorButtonDanger mr-1 w-auto"
+                        (click)="consultaPqrs(1)">
+                        <i class="fa fa-search iconColor"></i>
+                        Buscar
+                    </button>
+                    <button type="button" class="form-group btn btn-danger btn-red colorButtonDanger w-auto"
+                        (click)="limpiarForm(formularioBusqueda)">
+                        <i class="fa fa-refresh iconColor"></i>
+                        Limpiar
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+    <br>
+    <div class="container-fluid d-flex justify-content-end mt-2" *ngIf="!esPerfilAdministrador()">
+        <button type="button" class="form-group btn btn-danger btn-red colorButtonDanger mr-1 w-auto"
+            (click)="redireccionarCreacionPQR()">
+            <i class="fa fa-plus iconColor" aria-hidden="true"></i>
+            Crear PQR
+        </button>
+    </div>
+    <div class="row" *ngIf="cargacompleta && listaPQR && listaPQR.length > 0 ">
+        <div class="col-md-12 text-center">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="7">
+                            <h5>LISTA DE SOLICITUDES</h5>
+                        </th>
+                       
+                        <div class="d-flex justify-content-center" *ngIf="esPerfilAdministrador()">
+                            <div class="w-auto " *ngIf="cargacompleta && listaPQR && listaPQR.length > 0 ">
+                                <button class="btn btn-danger boton-Rojo btn-block btn-sm" href="#reportePQRSModal"
+                                    data-toggle="modal">
+                                    <i class="fad fa-file-chart-line iconColor" aria-hidden="true"></i>
+                                    Generar reporte
+                                </button>
+                            </div>
+                        </div>
+
+                    </tr>
+                    <tr>
+                        <th>ID </th>
+                        <th># Cedula </th>
+                        <th>Fecha solicitud </th>
+                        <th>Tipo solicitud</th>
+                        <th>Producto</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let obj of listaPQR| paginate: {
+                            itemsPerPage: tamanoPagina,
+                            currentPage: numPag,
+                            totalItems: totalRegistros };let i = index" [class.active]="i == currentIndex">
+                        <td>{{ obj.idPQR }}</td>
+                        <td>{{ obj.cedula_usuario }}</td>
+                        <td>{{ obj.fechaRegistro }}</td>
+                        <td>{{ obj.tipoSolicitud }}</td>
+                        <td>{{ obj.nombreCategoria }}</td>
+                        <td>{{ obj.motivo }}</td>
+                        <td>{{ obj.estado }}</td>
+                        <!-- <td [ngStyle]="{'color': definirColorEstadoPQR(obj.estado) }">{{ obj.estado }}</td> -->
+                        <!-- <td [ngStyle]="{'color': 1=1 ? 'red' : 'blue'}">{{ obj.estado }}</td> -->
+                        <td><a class="texto" (click)="irDetallePQR(obj.idPQR)">
+                                Editar
+                                <i class="fas fa-user-edit btn-sm " style="color:#f53201;"></i>
+                            </a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="alert alert-warning text-center mt-3" *ngIf="cargacompleta && listaPQR && listaPQR.length == 0   ">
+        <h4 class="alert-heading">No hay registros</h4>
+        <p>
+            <i class="fa fa-exclamation fa-2x"></i>
+        </p>
+    </div>
+
+    <div class="clearfix" *ngIf="cargacompleta && listaPQR && listaPQR.length > 0 ">
+        <pagination-controls class="d-flex justify-content-end" responsive="true" previousLabel="Anterior"
+            nextLabel="Siguiente" (pageChange)="consultaPqrs($event)">
+        </pagination-controls>
+    </div>
+
+</div>
+
+<!--modal reporte-->
+<div id="reportePQRSModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header btn-color padding">
+                <h2 class="color-blanco">Filtro Para reporte</h2>
+                <button type="button" class="color-blanco close btnOn" data-dismiss="modal" aria-label="Close">
+                    <h3>
+                        <span class="color-blanco" aria-hidden="true">&times;</span>
+                    </h3>
+                </button>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="font-weight-bold">Por favor seleccione tipo de reporte.</p>
+                        <form [formGroup]="formularioBusqueda">
+                            <div class="row">
+                                <div class="col-md-8 offset-md-2 d-flex">
+
+                                    <label for="estado" class="m-2">
+                                        <p class="font-weight-bold">Tipo de reporte:</p>
+                                    </label>
+
+                                    <select class="form-control form-control-sm m-2" formControlName="tipoReporte">
+                                        <option value="" selected>Seleccione un tipo de Reporte</option>
+                                        <option value='R'>Resumido</option>
+                                        <option value='C'>Detallado</option>
+                                    </select>
+
+                                    <button class="btn btn-outline-comp btn-block btn-hg m-2"
+                                        (click)="limpiarForm(formularioBusqueda)">
+                                        <i class="far fa-trash-undo icono-Comp ">
+                                            Limpiar
+                                        </i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn boton-Rojo mx-3 my-3"
+                (click)="descargarReportePQRS()">Descargar</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="col-md-12 text-center mt4">
+        <h5  Class="font-weight-bold">EDITAR<span class="colorTitle font-weight-bold">PERFIL</span></h5>
+    </div>
+    <div class="container col-md-12">
+        <div class="border p-4">
+            <div class="col text-center">
+                <label class="text-center textoRed mt-2 " >Unicamente es posible editar la descripcion y el canal</label>
+            </div>
+            <form class="mt4" [formGroup]="formaEditarPerfil" (ngSubmit)="guardar()">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">ID:</label>
+                    <label class="col-sm-8 col-form-label">{{
+                        this.formaEditarPerfil.get('idPerfil').value }}</label>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Refiere:</label>
+                    <label class="col-sm-8 col-form-label">{{
+                        this.formaEditarPerfil.get('isReferido').value == 0 ? 'SI' : 'NO' }}</label>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Nombre perfil:</label>
+                    <label class="col-sm-8 col-form-label">{{
+                        this.formaEditarPerfil.get('nombrePerfil').value }}</label>
+                </div>
+
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Canales:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-sm" 
+                            formControlName="canales" [class.is-invalid]="canalesNoValido">
+                        <small *ngIf="canalesNoValido" class="text-danger">Debe ingresar  los canales del perfil</small>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Descripción Perfil:</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control-sm" cols="50" rows="2" class="form-control"
+                            formControlName="descripcionPerfil" [class.is-invalid]="descripcionPerfilNoValido"></textarea>
+                        <small *ngIf="descripcionPerfilNoValido" class="text-danger">Debe ingresar descripcion</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn" 
+                    [disabled]="formaEditarPerfil.invalid || !this.formaEditarPerfil.dirty">Guardar</button>
+
+                <button class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn" routerLink="/administrador/perfiles">
+                    <i class="fa fa-arrow-left"></i> Cancelar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

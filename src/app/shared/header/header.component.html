@@ -1,0 +1,131 @@
+<!--nav class="navStyle" *ngIf="!menu"-->
+    <nav class="navStyle" *ngIf="menu && admin === 'false' && idPerfilLogueado === 2">
+    <div class="text-center">
+        <img src="assets/img/logo1.png" alt="" width="20%">
+    </div>
+</nav>
+<!-- MENU PARA EL MODULO DE USUARIO-->
+<div class="navStyleTwo barra-menu-usuario" *ngIf="menu && admin === 'false'">
+    <div class="row divStyle">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+            <img src="assets/img/logo2.png" alt="" width="60%" class="imgStyle">
+        </div>
+
+        <div class="col-lg-8  col-md-8 col-sm-8 styleTitle" style="padding-top: 2%;">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 text-right ">
+                    <small class="nav-bar-title"><i class="fa fa-user styleIcon" aria-hidden="true"></i>Hola {{
+                        nombreUsuario }}</small><br>
+                    <span class="nav-bar-title">tienes {{ puntosActuales }} PTS</span><br>
+					<br>
+				</div>
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                    <div class="btn-group">
+                        <i class="fa fa-chevron-down styleIconMenu" aria-hidden="true" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></i>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" [routerLink]="['/usuario/cuenta']">Mi cuenta</a>
+                            <a class="dropdown-item" [routerLink]="['/usuario/informacion']">Información</a>
+                            <a class="dropdown-item" (click)="cerrarSesion()">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1">
+                    <div class="pull-right">
+                        <a class="nav-bar-title" [routerLink]="['/usuario/preguntas']">
+                            <i class="fa fa-question-circle fa-2x styleIcon" aria-hidden="true"></i>
+                        </a>
+                        <p class="nav-bar-title">Preguntas Frecuentes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <nav class="menu2 navbar navbar-expand-sm navbar-light aling">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav navbar-center">
+                    <li class="nav-item menu2" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/usuario/inicio']">INICIO</a>
+                    </li>
+                    <li class="nav-item menu2" *ngFor="let categoria of listaCategorias; let i = index"
+                        routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/usuario/galeriaArticulos/' + categoria.idCategoria]">{{
+                            categoria.nombreCategoria | uppercase }}</a>
+                    </li>
+                    <li *ngIf="vReferir" class="nav-item menu2" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/usuario/referido']">REFERIDOS</a>
+                    </li>
+                   
+                    <li class="nav-item menu2" routerLinkActive="active" *ngIf="activarMenuPQR() == 'true'">
+                        <a class="nav-link" [routerLink]="['/usuario/pqrs']">RECEPCIÓN SOLICITUDES Y COMUNICACIÓN</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<!-- MENU PARA EL MODULO DE ADMINISTRADOR-->
+<div class="navStyleTwo" *ngIf="menu && admin === 'true'">
+    <div class="row divStyle">
+        <div class="col-md-3">
+            <img src="assets/img/logo2.png" alt="" width="60%" class="imgStyle">
+        </div>
+        <div class="col-md-6 styleTitle" style="padding-top: 3%;">
+            <h5 class="nav-bar-title">MODULO DE ADMINISTRADOR</h5>
+        </div>
+        <div class="col-md-3 styleTitle nav-bar-title" style="padding-top: 2%;">
+            <small class="nav-bar-title"><i class="fa fa-user styleIcon" aria-hidden="true"></i>{{ nombreUsuario
+                }}</small><br>
+            <a class="styleTitle" (click)="cerrarSesion()"><i class="fa fa-power-off styleIcon"
+                    aria-hidden="true"></i>Cerrar Sesion</a>
+        </div>
+    </div>
+    <div class="container">
+        <nav class="menu navbar navbar-expand-sm navbar-light ">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/pedido']">Pedidos</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link " [routerLink]="['/administrador/cargaArchivo']">Carga Archivos</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/puntosCanjes']">Puntos y Canjes</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/administrador']">Crear Administrador</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/consultarInformacion']">Actualizacion de
+                            datos base liga</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/articulo']">Administración de artículos</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/categorias']">Categorías</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/referidos']">Referidos</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/parametrizaciones']">Parametrizaciones</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/parametrizacion']">Preguntas</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/perfiles']">Perfiles</a>
+                    </li>
+                    <li class="nav-item menu" routerLinkActive="active">
+                        <a class="nav-link" [routerLink]="['/administrador/pqrs']">Pqrs</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.colorButtonDanger {
+    margin-top: 5%;
+    background: #ef3829;
+}
+
+.colorButtonDanger2 {
+    background: #ef3829;
+}
+
+.iconColor {
+    color: white;
+    padding-left: 5px !important;
+}
+
+.dashed {
+    border-style: dashed;
+    border-radius: 10px;
+}
+
+.tableStyle {
+    margin-right: 10%;
+    font-size: 13px;
+}

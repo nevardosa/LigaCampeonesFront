@@ -1,0 +1,601 @@
+<div class="container">
+    <div class="row div-space2">
+        <div class="col-lg-12 text-center align-middle margin-bannerText">
+            <h1 class=" pull-center">MÓDULO<strong><span class="colorTitle">PUNTOS Y CANJES</span></strong>
+            </h1>
+        </div>
+    </div>
+
+    <div class="responsive text-center">
+
+        <div class="col-lg-12 row">
+            <div class="col-lg-7 row">
+                <div class="col-6">
+                    <form [formGroup]="formulario">
+                        <div class="row">
+                            <div class="form-group">
+                                <mat-form-field class="pull-right mr-2" appearance="fill">
+                                    <mat-label>Búsqueda Cédula</mat-label>
+                                    <input type="text" formControlName="cedula" matInput placeholder="No. de cédula"
+                                        spellcheck="false" autocomplete="none" />
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <button [disabled]="formulario.invalid || formulario.pristine"
+                                    class="btn-sm btn btn-danger  btn-color pull-right " (click)="buscar()">
+                                    Buscar
+                                </button>
+                            </div>
+                            <div *ngFor="let validation of count_validation_messages.cedula pull-right">
+                                <small class="text-danger"
+                                    *ngIf="validarError(formulario,'cedula', validation.type)">{{validation.message}}</small>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5 form-group">
+                <button class="btn-sm btn btn-danger btn-color pull-right" (click)="descargarResumenPuntos(null)">
+                    <i class="fa fa-download iconColor" aria-hidden="true"></i>
+                    Exporta a Excel Puntos Ganados
+                </button>
+                <button class="btn-sm btn btn-danger btn-color pull-right mr-2"
+                    (click)="descargarResumenPuntosVencidos(null)">
+                    <i class="fa fa-download iconColor" aria-hidden="true"></i>
+                    Exporta a Excel Puntos Vencidos
+                </button>
+            </div>
+        </div>
+        <table mat-table [dataSource]="dataSourcePuntos" class="table table-striped tabla-gris">
+            <ng-container matColumnDef="Cedula">
+                <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                    Cédula
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-center">{{ element.cedula}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="PGanados">
+                <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                    Puntos Ganados
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-center">{{ element.puntosGanados}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="PCanjeados">
+                <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                    Puntos Canjeados
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-center">{{element.puntosCanjeados}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="PRestantes">
+                <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                    Puntos Restantes
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-center">{{element.puntosRestantes}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="PVencidos">
+                <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                    Puntos Vencidos
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="text-center">{{element.puntosVencidos}}</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Accion">
+                <th scope="col" class="text-center borde-derecho" mat-header-cell *matHeaderCellDef> Acción
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="btn-group">
+                        <button class="btn-lg btn btn-outline-info" id="MDetallePuntos" (click)="cargarDetalle(element)"
+                            data-toggle="modal" data-target="#ModalDetallePuntos">Ver Detalle</button>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="ColumnsPuntos"></tr>
+            <tr mat-row *matRowDef="let row; columns: ColumnsPuntos | paginate: {
+                id:'pagTotal', 
+                itemsPerPage: tamanoPagina,
+                currentPage: numPag,
+                totalItems: totalRegistros };let i = index" [class.active]="i == currentIndex"
+                (click)="selection.toggle(row)">
+            </tr>
+        </table>
+        <div *ngIf="cargaCompleta && resumenPuntos.length == 0">
+            <div class="col-lg-12 text-center align-middle">
+                <h1 class="pull-center"><span>No hay registros.</span>
+                </h1>
+            </div>
+        </div>
+        <div class="col-lg-12 row" *ngIf="totalRegistros > 0 ">
+            <div class="col-lg-7 ">
+                <div class="col-6">
+                </div>
+                <div class="col-6 pull-right">
+                    <form [formGroup]="formularioConfiguracion">
+                        <div class="row pull-right">
+                            <div class="form-group">
+                                <mat-form-field class="pull-left mr-2" appearance="fill">
+                                    <mat-label>Registros por página</mat-label>
+                                    <input spellcheck="false" autocomplete="none" matInput type="text" min="1"
+                                        placeholder="Ingresar Tamaño Pag." formControlName="tamanoPagina">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <button [disabled]="formularioConfiguracion.invalid"
+                                    class="btn-sm btn btn-danger  btn-color pull-left"
+                                    (click)="cambiarNumeroRegistros(tablaPuntosTotal)">
+                                    Buscar
+                                </button>
+                            </div>
+                            <div *ngIf="cantidadRegistrosNoValido">
+                                <div *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                    <small class="text-danger"
+                                        *ngIf="validarError(formularioConfiguracion,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5 form-group">
+                <div class="clearfix">
+                    <pagination-controls id="pagTotal" class="d-flex justify-content-end" responsive="true"
+                        previousLabel="Anterior" nextLabel="Siguiente"
+                        (pageChange)="consultarPagina($event,tablaPuntosTotal)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Modal Detalle Puntos-->
+    <div class="modal fade" id="ModalDetallePuntos" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+            <div class="modal-content">
+                <div class="modal-header btn-color">
+                    <h2 class="color-blanco">DETALLE PUNTOS</h2>
+                    <button class="close btnOn" aria-label="close" type="button" data-dismiss="modal">
+                        <span>
+                            <h1 class="color-blanco">&times;</h1>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="m-5">
+                        <button type="button" class="btn btn-danger colorButtonDanger2"
+                            (click)="descargarDetallePuntos()" [disabled]="validarDescarga()">
+                            <i class="fa fa-download iconColor" aria-hidden="true"></i>
+                            Exporta a Excel
+                        </button>
+                    </div>
+                    <mat-tab-group mat-stretch-tabs>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <div class="col-lg-12 text-center align-middle margin-bannerText">
+                                    <h3 class=" pull-center"><strong><span class="colorTitle">PUNTOS
+                                                GANADOS</span></strong>
+                                    </h3>
+                                </div>
+                            </ng-template>
+                            <div class="row m-4">
+                                <table mat-table [dataSource]="dataSourcePuntosGanados"
+                                    class="table table-striped tabla-gris">
+                                    <ng-container matColumnDef="FActivacion">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Fecha Activacón
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span
+                                                class="text-center"><strong>{{element.fechaActivacion}}</strong></span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Producto">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Producto
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{ element.producto}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Cedula">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Cédula cliente
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.cedulaCliente}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="NCta">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            No CTA / Min
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.ctaMin}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Puntos">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Puntos
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.puntos}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Estado">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Estado
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.estado}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Descripcion">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Descripcion </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.descripcion}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="ColumnsPuntosGanados"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ColumnsPuntosGanados | paginate: {
+                                        id:'pagGanados', 
+                                        itemsPerPage: tamanoPaginaGanados,
+                                        currentPage: numPagGanados,
+                                        totalItems: totalRegistrosGanados };let i = index"
+                                        [class.active]="i == currentIndex" (click)="selectionPGanados.toggle(row)"></tr>
+                                </table>
+                                <div *ngIf="cargaPuntosGanados && ganados && ganados.length == 0"
+                                    class="col-lg-12 text-center align-middle">
+                                    <h1 class=" pull-center"><span>No hay registros.</span>
+                                    </h1>
+                                </div>
+                                <div class="col-lg-12 text-right align-middle"
+                                    *ngIf="resumenPuntosdetalle && cargaPuntosGanados && ganados && ganados.length > 0">
+                                    <h4><strong><span>TOTAL: {{ resumenPuntosdetalle.puntosGanados}}</span></strong>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 row" *ngIf="totalRegistrosGanados > 0">
+                                <div class="col-lg-7 ">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6 pull-right">
+                                        <form [formGroup]="formularioPuntosGanados">
+                                            <div class="row pull-right">
+                                                <div class="form-group">
+                                                    <mat-form-field class="pull-left mr-2" appearance="fill">
+                                                        <mat-label>Registros por página</mat-label>
+                                                        <input spellcheck="false" autocomplete="none" matInput
+                                                            type="text" min="1" placeholder="Ingresar Tamaño Pag."
+                                                            formControlName="tamanoPagina">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button [disabled]="formularioPuntosGanados.invalid"
+                                                        class="btn-sm btn btn-danger  btn-color pull-left"
+                                                        (click)="cambiarNumeroRegistros(tablaPuntosGanados)">
+                                                        Buscar
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="cantRegistrosGanadosNoValido">
+                                                    <div
+                                                        *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                                        <small class="text-danger"
+                                                            *ngIf="validarError(formularioPuntosGanados,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 form-group">
+                                    <div class="clearfix">
+                                        <pagination-controls id="pagGanados" class="d-flex justify-content-end"
+                                            responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+                                            (pageChange)="consultarPagina($event,tablaPuntosGanados)">
+                                        </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <div class="col-lg-12 text-center align-middle margin-bannerText">
+                                    <h3 class=" pull-center"><strong><span class="colorTitle">PUNTOS
+                                                VENCIDOS</span></strong>
+                                    </h3>
+                                </div>
+                            </ng-template>
+                            <div class="m-4">
+
+                                <table mat-table [dataSource]="dataSourcePuntosVencidos"
+                                    class="table table-striped tabla-gris">
+                                    <ng-container matColumnDef="Cedula">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Cédula
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{ element.cedula}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Celular">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Celular
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{ element.celular}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="PGanados">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Puntos Ganados
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.puntosGanados}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="PVencidos">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Puntos Vencidos
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.puntosVencidos}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="fActivacion">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Fecha Activación
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.fechaActivacion}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="fVencimiento">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Fecha Vencimiento
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.fechaVencimiento}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="MVencimiento">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Motivo Vencimiento </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.motivoVencimiento}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="ColumnsPuntosVencidos"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ColumnsPuntosVencidos| paginate: {
+                                        id:'pagVencidos', 
+                                        itemsPerPage: tamanoPaginaVencidos,
+                                        currentPage: numPagVencidos,
+                                        totalItems: totalRegistrosVencidos };let i = index"
+                                        [class.active]="i == currentIndex" (click)="selectionPvencidos.toggle(row)">
+                                    </tr>
+                                </table>
+
+                                <div *ngIf="cargaPuntosVencidos && resumenPuntosVencidos && resumenPuntosVencidos.length == 0"
+                                    class="col-lg-12 text-center align-middle">
+                                    <h1 class=" pull-center"><span>No hay registros.</span>
+                                    </h1>
+                                </div>
+                                <div class="col-lg-12 text-right align-middle"
+                                    *ngIf="cargaPuntosVencidos && resumenPuntosVencidos && resumenPuntosVencidos.length > 0">
+                                    <h4><strong><span>TOTAL: {{ resumenPuntosdetalle.puntosVencidos}}</span></strong>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 row" *ngIf="totalRegistrosVencidos > 0 ">
+                                <div class="col-lg-7 ">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6 pull-right">
+                                        <form [formGroup]="formularioPuntosVencidos">
+                                            <div class="row pull-right">
+                                                <div class="form-group">
+                                                    <mat-form-field class="pull-left mr-2" appearance="fill">
+                                                        <mat-label>Registros por página</mat-label>
+                                                        <input spellcheck="false" autocomplete="none" matInput
+                                                            type="text" min="1" placeholder="Ingresar Tamaño Pag."
+                                                            formControlName="tamanoPagina">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button [disabled]="formularioPuntosVencidos.invalid"
+                                                        class="btn-sm btn btn-danger  btn-color pull-left"
+                                                        (click)="cambiarNumeroRegistros(tablaPuntosVencidos)">
+                                                        Buscar
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="cantRegistrosVencidosNoValido">
+                                                    <div
+                                                        *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                                        <small class="text-danger"
+                                                            *ngIf="validarError(formularioPuntosVencidos,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 form-group">
+                                    <div class="clearfix">
+                                        <pagination-controls id="pagVencidos" class="d-flex justify-content-end"
+                                            responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+                                            (pageChange)="consultarPagina($event,tablaPuntosVencidos)">
+                                        </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <div class="col-lg-12 text-center align-middle margin-bannerText">
+                                    <h3 class=" pull-center"><strong><span class="colorTitle">PUNTOS
+                                                REDIMIDOS</span></strong>
+                                    </h3>
+                                </div>
+                            </ng-template>
+                            <div class="row m-4">
+
+                                <table mat-table [dataSource]="dataSourcePuntosRedimidos"
+                                    class="table table-striped tabla-gris">
+                                    <ng-container matColumnDef="FRedencion">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Fecha Redención
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center"><strong>{{element.fechaPedido}}</strong></span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Producto">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Producto
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{ element.cantidad }} {{
+                                                element.nombreCategoria
+                                                }}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="EspecPremio">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Especificaciones del Premio
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.nombreProducto}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="PRedimidos">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Puntos Redimidos
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.puntos}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Estado">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Estado
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.estado}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="MRechazo">
+                                        <th scope="col" class="text-center borde-derecho " mat-header-cell
+                                            *matHeaderCellDef>
+                                            Motivo de rechazo
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="text-center">{{element.motivoRechazo}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="ColumnsPuntosRedimidos"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: ColumnsPuntosRedimidos | paginate: {
+                                        id:'pagRedimidos', 
+                                        itemsPerPage: tamanoPaginaRedimidos,
+                                        currentPage: numPagRedimidos,
+                                        totalItems: totalRegistrosRedimidos };let i = index"
+                                        [class.active]="i == currentIndex" (click)="selectionPRedimidos.toggle(row)">
+                                    </tr>
+                                </table>
+
+                                <div *ngIf="cargaPuntosRedimidos && redimidos && redimidos.length == 0"
+                                    class="col-lg-12 text-center align-middle">
+                                    <h1 class=" pull-center"><span>No hay registros.</span>
+                                    </h1>
+                                </div>
+                                <div class="col-lg-12 text-right align-middle"
+                                    *ngIf="cargaPuntosRedimidos && redimidos && redimidos.length > 0">
+                                    <h4><strong><span>TOTAL: {{ resumenPuntosdetalle.puntosCanjeados}}</span></strong>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 row" *ngIf="totalRegistrosRedimidos > 0 ">
+                                <div class="col-lg-7 ">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6 pull-right">
+                                        <form [formGroup]="formularioPuntosRedimidos">
+                                            <div class="row pull-right">
+                                                <div class="form-group">
+                                                    <mat-form-field class="pull-left mr-2" appearance="fill">
+                                                        <mat-label>Registros por página</mat-label>
+                                                        <input spellcheck="false" autocomplete="none" matInput
+                                                            type="text" min="1" placeholder="Ingresar Tamaño Pag."
+                                                            formControlName="tamanoPagina">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button [disabled]="formularioPuntosRedimidos.invalid"
+                                                        class="btn-sm btn btn-danger  btn-color pull-left"
+                                                        (click)="cambiarNumeroRegistros(tablaPuntosRedimidos)">
+                                                        Buscar
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="cantRegistrosRedimidosNoValido">
+                                                    <div
+                                                        *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                                        <small class="text-danger"
+                                                            *ngIf="validarError(formularioPuntosRedimidos,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 form-group">
+                                    <div class="clearfix">
+                                        <pagination-controls id="pagRedimidos" class="d-flex justify-content-end"
+                                            responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+                                            (pageChange)="consultarPagina($event,tablaPuntosRedimidos)">
+                                        </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>

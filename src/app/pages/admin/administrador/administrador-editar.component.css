@@ -1,0 +1,6 @@
+.btnOn {
+    border: none solid rgba(242, 53, 28, 1);
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}

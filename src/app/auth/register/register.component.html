@@ -1,0 +1,161 @@
+<div class="fondo">
+    <div class="container register">
+        <div class="col-lg-8 mt-4 mb-4 formularioStyle centrar-form" id="contendorForm">
+            <form class="col-lg-12 d-block" [formGroup]="formaRegistro" (ngSubmit)="guardar()">
+                <div class="col-lg-12">
+                    <h3 id="Bienvenidoa" class="labelStyle liga-taps">Bienvenido(a)</h3>
+                    <p><span class="labelStyle liga-taps"> CONTRATO: </span>{{ getTipoContratoRegistrar() }}</p>
+                    <p><span class="labelStyle liga-taps"> PERFIL REGISTRAR: </span>{{ getNombrePerfilRegistrar() }}</p>
+                </div>
+                <div class="col-lg-12 d-flex">
+                    <div class="col-lg-6">
+                        <input class="form-control form-control-sm mt-2 input-login" type="text" placeholder="Nombre"
+                            formControlName="nombre" [class.is-invalid]="NombreNoValido">
+                        <small *ngIf="NombreNoValido" class="text-danger">Debe ingresar nombre</small>
+
+                        <input class="form-control form-control-sm mt-2 input-login" type="text" placeholder="Apellido"
+                            formControlName="apellido" [class.is-invalid]="ApellidoNoValido">
+                        <small *ngIf="ApellidoNoValido" class="text-danger">Debe ingresar apellido</small>
+
+                        <input class="form-control form-control-sm mt-2 input-login" type="text" placeholder="Documento"
+                            formControlName="documento" [class.is-invalid]="DocumentoNoValido">
+                        <small *ngIf="DocumentoNoValido" class="text-danger">Debe ingresar # documento</small>
+                    </div>
+                    <div class="col-lg-6">
+                        <mat-form-field color="warn" appearance="fill" [style]="{ 'width' : '100%'}" class="mt-2">
+                            <input matInput [max]="maxDate" [matDatepicker]="picker" formControlName="FNacimiento"
+                                readonly placeholder="Fecha Nacimiento" [class.is-invalid]="FNacimientoNoValido">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <small *ngIf="FNacimientoNoValido" class="text-danger">Debe ingresar fecha de
+                            nacimiento</small>
+                        <small *ngIf="menorEdad" class="text-danger">El usuario debe ser mayor de
+                            edad</small>
+
+                        <select class="form-control form-control-sm input-login" formControlName="canal"
+                            [class.is-invalid]="CanalNoValido">
+                            <option selected>Seleccione canal</option>
+                            <option *ngFor="let item of canales" [value]="item">{{item}}</option>
+                        </select>
+                        <small *ngIf="CanalNoValido" class="text-danger">Debe seleccionar el canal</small>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <label class="labelStyle mt-4 mb-4 icon-color-azul liga-taps">Completa tus datos:</label>
+                </div>
+                <div class="col-lg-12 d-flex">
+                    <div class="col-lg-6">
+                        <input class="form-control form-control-sm input-login" type="text"
+                            placeholder="Número de celular" formControlName="numeroCelular"
+                            [class.is-invalid]="NumeroCelularNoValido">
+
+                        <div *ngIf="NumeroCelularNoValido">
+                            <div *ngFor="let validation of count_validation_messages.celular">
+                                <small class="text-danger"
+                                    *ngIf="validarError('numeroCelular', validation.type)">{{validation.message}}</small>
+                            </div>
+                        </div>
+                        <select class="form-control form-control-sm mt-2 input-login" formControlName="departamento"
+                            [class.is-invalid]="DepartamentoNoValido" (change)="cargarCiudades2()">
+                            <option value="" selected>Seleccione departamento</option>
+                            <option *ngFor="let item of listaDepartamentos" [value]="item.codigoDane">
+                                {{item.nombreLugar}}
+                            </option>
+                        </select>
+                        <small *ngIf="DepartamentoNoValido" class="text-danger">Debe seleccionar departamento</small>
+
+                        <select class="form-control form-control-sm mt-2 input-login" formControlName="ciudad"
+                            [class.is-invalid]="CiudadNoValido">
+                            <option value="" selected>Seleccione la ciudad</option>
+                            <option *ngFor="let item of listaCiudades" [value]="item.codigoDane">{{item.nombreLugar}}
+                            </option>
+                        </select>
+                        <small *ngIf="CiudadNoValido" class="text-danger">Debe seleccionar ciudad</small>
+
+                        <input class="form-control form-control-sm mt-2 input-login" type="text" placeholder="Dirección"
+                            formControlName="direccion" [class.is-invalid]="DireccionNoValido">
+                        <small *ngIf="DireccionNoValido" class="text-danger">Debe ingresar dirección</small>
+
+                        <input class="form-control form-control-sm mt-2 input-login" type="text" placeholder="Barrio"
+                            formControlName="barrio" [class.is-invalid]="BarrioNoValido">
+                        <small *ngIf="BarrioNoValido" class="text-danger">Debe ingresar barrio</small>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <input class="form-control form-control-sm mt-2 input-login" type="text" placeholder="Correo"
+                            formControlName="correo" [class.is-invalid]="CorreoNoValido">
+                        <small *ngIf="CorreoNoValido" class="text-danger">Debe ingresar un correo valido</small>
+
+                        <input class="form-control form-control-sm mt-2 input-login" [type]="mostrarPass"
+                            placeholder="Clave" formControlName="clave" [class.is-invalid]="ClaveNoValido">
+                        <small *ngIf="ClaveNoValido" class="text-danger">Clave no valida</small>
+
+                        <label Class="labelGris">(La clave debe ser alfa numérica de 6 dígitos que no tenga letras ni
+                            números consecutivos)</label>
+
+                        <input class="form-control form-control-sm mt-1 input-login" [type]="mostrarPass"
+                            placeholder="Repetir Clave" formControlName="repetirClave"
+                            [class.is-invalid]="RepetirClaveNoValido">
+                        <small *ngIf="RepetirClaveNoValido" class="text-danger">Las claves no coinciden</small>
+
+                        <div class="form-check text-left">
+                            <input type="checkbox" class="form-check-input" (click)="mostrarPassword()">
+                            <label class="form-check-label">Mostrar contraseña</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 d-flex terminos">
+                    <div class="col-lg-1">
+                        <label class="switch">
+                            <input type="checkbox" formControlName="aceptoTerminos"
+                                [class.is-invalid]="AceptoTerminosNovalido">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="col-lg-11 d-flex centrar-txt-div">
+                        <label class="labelGris">Acepto los <a href="#" data-toggle="modal"
+                                data-target="#modalTyC">términos y condiciones</a></label>
+                    </div>
+                </div>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalTyC" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close btnOn" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="container">
+                                <div class="marginTyc">
+                                    <div #divTyC>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <small *ngIf="AceptoTerminosNovalido" class="text-danger">Debe aceptar los terminos y
+                    condiciones</small>
+
+                <div class="col-lg-12 d-flex botones">
+                    <div class="col-lg-6 d-block centrar-content">
+                        <button type="submit" class="btn boton-Rojo btn-block mb-4 btn-login liga-taps"
+                            [disabled]="formaRegistro.invalid">Registrarme</button>
+                    </div>
+                    <div class="col-lg-6 d-block centrar-content">
+                        <button class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn btn-login liga-taps" routerLink="/login">
+                            <i class="fa fa-arrow-left"></i> Cancelar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

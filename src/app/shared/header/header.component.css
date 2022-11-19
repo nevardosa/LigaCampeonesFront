@@ -1,0 +1,102 @@
+.navStyle {
+    border-bottom: 2px solid red;
+}
+
+.navStyleTwo {
+    border-bottom: 2px solid white;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    background: rgb(247, 0, 0);
+    background: linear-gradient(0deg, rgba(247, 0, 0, 1) 1%, rgba(236, 234, 243, 1) 1%);
+}
+
+.divStyle {
+    background: rgb(239, 56, 41);
+    background: linear-gradient(90deg, rgba(239, 56, 41, 1) 29%, rgba(239, 56, 41, 0.8883928571428571) 72%, rgba(239, 56, 41, 0.5634628851540616) 92%), url(../../../assets/img/Imagen_70.png);
+    width: 100.83%;
+}
+
+.styleTitle {
+    color: white;
+}
+
+.styleIcon {
+    color: white;
+    margin-right: 2%;
+}
+
+.imgStyle {
+    margin-left: 5%;
+}
+
+.menu2.active {
+    margin-top: 2px;
+    background-color: #ef3829;
+    color: white;
+}
+
+.menu2.active a {
+    color: white;
+}
+
+.menu.active {
+    margin-top: 2px;
+    border-top: 2px solid red !important;
+    border-left: 2px solid red !important;
+    border-bottom: 2px solid white !important;
+    border-right: 2px solid red !important;
+    border-radius: 10px 10px 0px 0px;
+    background: white;
+}
+
+li.menu {
+    border-bottom: 2px solid red !important;
+}
+
+li.menu2 {
+    padding-left: .5rem !important;
+    padding-right: .5rem !important;
+}
+
+.menu.navbar {
+    padding: .0rem 2rem !important;
+    padding-top: .3rem !important;
+}
+
+.menu2.navbar {
+    padding: .0rem 2rem !important;
+    padding-top: .3rem !important;
+    padding-bottom: .3rem !important;
+}
+
+.navbar-nav.navbar-center {
+    padding-left: 20%;
+}
+
+#navbarNav {
+    margin-left: 3%;
+}
+
+.botonTranparente {
+    background: transparent;
+}
+
+.dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #ef3829;
+}
+
+.styleIconMenu {
+    color: white;
+    margin-left: -200%;
+    margin-top: 100%;
+}
+
+.styleIconUser {
+    color: white;
+    font-size: xxx-large;
+    margin-top: 27%;
+}

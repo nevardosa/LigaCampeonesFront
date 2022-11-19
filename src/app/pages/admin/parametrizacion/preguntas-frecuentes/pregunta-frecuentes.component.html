@@ -1,0 +1,244 @@
+<div class="container">
+    <div class="row div-space2">
+        <div class="col-lg-12 text-center align-middle margin-bannerText">
+            <h1 class=" pull-center upper"><strong><span class="colorTitle">Preguntas Frecuentes</span></strong>
+            </h1>
+        </div>
+    </div>
+    <div class="table-responsive">
+
+        <div class="col-md-12 div-space2">
+            <mat-form-field appearance="fill">
+                <mat-label>Búsqueda</mat-label>
+                <input (keyup)="buscarEnTabla($event.target.value)" spellcheck="false" autocomplete="none" matInput
+                    placeholder="Búsqueda">
+            </mat-form-field>
+
+            <div class="form-group">
+                <button type="button" class="btn-lg btn btn-danger btn-color col-2 pull-right" id="modalFormCrear"
+                    data-toggle="modal" data-target="#crearPregunta" (click)="agregarPregunta()">
+                    Crear Pregunta</button>
+            </div>
+        </div>
+        <section>
+            <table mat-table [dataSource]="dataSourcePregunta" class="table table-striped tabla-gris">
+
+                <ng-container matColumnDef="TipoPregunta">
+                    <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                        Tipo Pregunta
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="ellipsis text-center">{{ element.tipoPregunta}}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Pregunta">
+                    <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                        Pregunta
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="ellipsis text-center">{{ element.pregunta}}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Respuesta" >
+                    <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                        Respuesta
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="ellipsis" [innerHTML]="element.respuesta">                            
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="TipoVisualizacion">
+                    <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                        Tipo Visualización
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="ellipsis text-center">{{listTipoVisualizacion[element.tipoVisualizacion - 1]}}</span>
+                        
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Accion">
+                    <th scope="col" class="text-center borde-derecho p-1" mat-header-cell *matHeaderCellDef> Acción
+                    </th>
+                    <td class="borde-derecho p-1 text-center align-middle" mat-cell *matCellDef="let element">
+                        <div class="btn-group">
+                            <button class="fas fa-edit fa-lg text-info btn-lg btn btn-light mr-2" id="modalFormAct"
+                                (click)="actualizarPregunta(element)" data-toggle="modal"
+                                data-target="#crearPregunta"></button>
+                            <button class="fas fa-trash-alt fa-lg text-danger btn-lg btn btn-light"
+                                (click)="eliminarPregunta(element)"></button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="ColumnsPregunta"></tr>
+                <tr mat-row *matRowDef="let row; columns: ColumnsPregunta;" (click)="selection.toggle(row)"></tr>
+            </table>
+        </section>
+        <div *ngIf="listaPreguntas.length == 0">
+            <div class="col-lg-12 text-center align-middle">
+                <h1 class=" pull-center"><span>No hay registros.</span>
+                </h1>
+            </div>
+        </div>
+        <div class="form-group">
+            <mat-paginator #paginatorPregunta [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="crearPregunta">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;">
+        <div class="modal-content">
+            <div class="modal-header btn-color">
+                <h2 *ngIf="activeModal; else elseCrear" class="color-blanco">ACTUALIZAR PREGUNTAS</h2>
+                <ng-template #elseCrear>
+                    <h2 class="color-blanco">CREAR PREGUNTAS</h2>
+                </ng-template>
+                <button class="close btnOn" #closeCrearPreguntas aria-label="close" type="button" data-dismiss="modal">
+                    <span>
+                        <h1 class="color-blanco">&times;</h1>
+                    </span>
+                </button>
+            </div>
+            <form [formGroup]="formPreguntas">
+                <div class="row m-4">
+
+                    <div class="col-md-4">
+                        <label>Tipo pregunta:</label>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <mat-form-field class="full-width-input">
+                            <input text="text" formControlName="tipoPregunta" matInput placeholder="Tipo Pregunta"
+                                required />
+                            <mat-error *ngIf="isValido('tipoPregunta')">
+                                {{getMensajeError('tipoPregunta')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row m-4">
+
+                    <div class="form-group col-md-4">
+                        <label>Pregunta:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <mat-form-field class="full-width-input">
+                            <input text="text" formControlName="pregunta" matInput placeholder="Pregunta" required />
+                            <mat-error *ngIf="isValido('pregunta')">
+                                {{getMensajeError('pregunta')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row m-4">
+
+                    <div class="form-group col-md-4">
+                        <label>Respuesta:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="full-width-input">
+                            <angular-editor formControlName="respuesta" [config]="editorConfig" matInput
+                                placeholder="Respuesta" required></angular-editor>
+                            <mat-error *ngIf="isValido('respuesta')">
+                                {{getMensajeError('respuesta')}}
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-4">
+
+                    <div class="form-group col-md-4">
+                        <label>Tipo Visualización:</label>
+                    </div>
+                    <div class="col-md-8">
+                        <mat-form-field>
+                            <mat-label>--- Elige tipo visualización ---</mat-label>
+                            <mat-select formControlName="tipoVisualizacion">
+                                <mat-option [value]="i"
+                                    *ngFor="let visualizacion of listTipoVisualizacion; let i = index">
+                                    {{visualizacion}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="isValido('tipoVisualizacion')">
+                                {{getMensajeError('tipoVisualizacion')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row m-4">
+
+                    <div class="form-group col-md-4">
+                        <label>Imagenes:</label>
+                    </div>
+                    <div class="col-md-8 row">
+
+                        <div class="col-sm-6 p-2">
+                            <img class="imagen_banner" *ngIf="previewNewImg != null" [src]="previewNewImg" alt="">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-2">
+                                <div>
+                                    <button type="button" class="btn-block btn btn-outline-info btn-file"><i
+                                            class="fas fa-plus fa-2x mr-2"></i>
+                                        Agregar Imagen
+                                        <input [writeFile]="true" type="file" accept="image/*"
+                                            (change)="cargarNuevaImgen($event)" />
+                                    </button>
+
+                                </div>
+                                <div *ngIf="previewNewImg != null" class="div-space">
+                                    <button type="button" class="btn-block btn btn-success"
+                                        (click)="guardarNewImagen(previewNewImg)">
+                                        Guardar Imagen
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <table class="table table-responsive-md ">
+                            <tbody>
+                                <tr *ngFor="let imagen of listaImagenes;let i = index">
+                                    <td *ngIf="imagen.imagen != null">
+                                        <img class="imagen_banner" [src]="imagen.imagen">
+                                    </td>
+                                    <td *ngIf="imagen.imagen != null">
+                                        <div>
+                                            <button type="button" class="btn-block btn btn-outline-info btn-file"><i
+                                                    class="fas fa-plus fa-2x mr-2"></i>
+                                                Remplazar Imagen
+                                                <input [writeFile]="true" type="file" accept="image/*"
+                                                    (change)="cargarImg($event, i)" />
+                                            </button>
+                                        </div>
+                                        <div class="div-space">
+                                            <button type="button" class="btn-block btn btn-danger btn-color"
+                                                (click)="EliminarImagen(imagen, i)">
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+
+            <div class="container">
+                <div class="div-space2">
+                    <button type="button" class="btn-block btn btn-danger btn-color" [disabled]="!formPreguntas.valid"
+                        (click)="guardarPregunta(formPreguntas.value, activeModal)">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

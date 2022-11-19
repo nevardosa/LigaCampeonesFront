@@ -1,0 +1,222 @@
+<div class="container" style="font-size: 20px">
+    <div class="row">
+        <div class="col-lg-12 text-center align-middle margin-bannerText">
+            <h1 class=" pull-center">MÓDULO DE <strong><span class="colorTitle">CATEGORÍAS</span></strong>
+            </h1>
+        </div>
+    </div>
+    <form [formGroup]="formPerfil">
+
+        <div class="table-responsive" *ngIf="mostrarPerfil">
+            <div class="col-md-12 div-space2">
+                <div class="form-group">
+                    <button type="button" class="btn-lg btn btn-danger btn-color col-2 pull-right" id="modalLista"
+                        data-toggle="modal" data-target="#listaCategoria">±
+                        Gestionar Categoría</button>
+                        
+                    <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                        [disabled]="!formPerfil.valid || formPerfil.pristine" (click)="guardar()">Guardar</button>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">PERFIL</th>
+                        <th *ngFor="let categoria of listaCategoriasActivas" class="text-center">{{
+                            categoria.nombreCategoria}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody formArrayName="arrayPerfilxCategorias">
+                    <tr *ngFor="let perfil of listaPerfiles, let indexPerfil = index">
+                        <td class="text-center">{{perfil.nombrePerfil}}
+                        </td>
+                        <td *ngFor="let categoria of listaCategoriasActivas, let indexCategoria = index"
+                            class="text-center">
+                            <mat-checkbox class="margin"
+                                formControlName="{{indexPerfil * listaCategoriasActivas.length + indexCategoria}}">
+                            </mat-checkbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="listaPerfiles.length == 0 || listaCategoriasActivas == 0" class="col-lg-12 text-center align-middle">
+                <h1 class=" pull-center"><span>No hay registros.</span>
+                </h1>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade" id="listaCategoria">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+            <div class="modal-content">
+                <div class="modal-header btn-color div-space2">
+                    <h2 class="color-blanco">GESTIONAR CATEGORÍA</h2>
+                    <button class="close btnOn" #closeListCategoria aria-label="close" type="button"
+                        data-dismiss="modal">
+                        <span aria-hidden="true">
+                            <h1 class="color-blanco">&times;</h1>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="container">
+                    <div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">orden</th>
+                                    <th class="text-center">Categoría</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let categoria of listaCategoriasFull">
+                                    <td class="text-center">{{categoria.orden}}
+                                    </td>
+                                    <td class="text-center">{{categoria.nombreCategoria}}
+                                    </td>
+                                    <td *ngIf="categoria.estado == 1; else elseEstado" class="text-center"
+                                        style="color: darkgrey;"><strong>Activo</strong>
+                                    </td>
+                                    <ng-template #elseEstado>
+                                        <td class="text-center" style="color: darkgrey;">Inactivo
+                                        </td>
+                                    </ng-template>
+
+
+                                    <td class="text-center">
+                                        <button class="fas fa-edit fa-lg text-info btn-lg btn btn-light"
+                                            id="modalFormAct" (click)="actualizarCategoria(categoria)"
+                                            data-toggle="modal" data-target="#crearCategoria"></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="div-space2">
+                        <button type="button" class="btn-block btn btn-info" id="modalFormAgre"
+                            (click)="agregarCategoria()" data-toggle="modal"
+                            data-target="#crearCategoria">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="crearCategoria">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+            <div class="modal-content">
+                <div class="modal-header btn-color">
+                    <h2 *ngIf="activeModal; else elseCrear" class="color-blanco">ACTUALIZAR CATEGORÍA</h2>
+                    <ng-template #elseCrear>
+                        <h2 class="color-blanco">CREAR CATEGORÍA</h2>
+                    </ng-template>
+                    <button class="close btnOn" #closeCrearCategoria aria-label="close" type="button"
+                        data-dismiss="modal">
+                        <span>
+                            <h1 class="color-blanco">&times;</h1>
+                        </span>
+                    </button>
+                </div>
+                <form [formGroup]="formCategoria">
+                    <div class="row m-4">
+
+                        <div class="col-md-4">
+                            <label>Orden Categoría:</label>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <mat-form-field class="full-width-input">
+                                <input text="text" formControlName="orden" matInput placeholder="Orden Categoría"
+                                    required />
+                                <mat-error *ngIf="isValido('orden')">
+                                    {{getMensajeError('orden')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row m-4">
+
+                        <div class="form-group col-md-4">
+                            <label>Nombre Categoría:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <mat-form-field class="full-width-input">
+                                <input text="text" formControlName="nombreCategoria" matInput
+                                    placeholder="Nombre Categoría" required />
+                                <mat-error *ngIf="isValido('nombreCategoria')">
+                                    {{getMensajeError('nombreCategoria')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row m-4">
+
+                        <div class="form-group col-md-4">
+                            <label>Tipo Redención:</label>
+                        </div>
+                        <div class="col-md-8 ui-lista-container">
+                            <mat-form-field>
+                                <mat-select formControlName="tipoRedencion">
+                                    <mat-option [value]= "i" *ngFor="let redencion of listTipoRendecion; let i = index">
+                                        {{redencion}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="isValido('tipoRedencion')">
+                                    {{getMensajeError('tipoRedencion')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row m-4">
+
+                        <div class="col-md-4">
+                            <label>Estado:</label>
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <mat-slide-toggle class="mr-4" formControlName="estado" (change)="estadoSelect($event)">
+                            </mat-slide-toggle>
+                            <span>
+                                <strong> {{estadoCategoria}}</strong>
+                            </span>
+                            <mat-error *ngIf="isValido('estado')">
+                                {{getMensajeError('estado')}}
+                            </mat-error>
+                        </div>
+                    </div>
+                    <div class="row m-4">
+
+                        <div class="col-md-4">
+                            <label>Motivos Generación pqrs:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <mat-form-field class="full-width-input">
+                                <input text="text" formControlName="listaMotivoPqrs" matInput
+                                    placeholder="Motivo PQRS" required />
+                                <mat-error *ngIf="isValido('listaMotivoPqrs')">
+                                    {{getMensajeError('listaMotivoPqrs')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="container">
+                    <div class="div-space2">
+                        <button type="button" class="btn-block btn btn-danger btn-color"
+                            [disabled]="!formCategoria.valid || formCategoria.pristine"
+                            (click)="guardarCategoria(formCategoria.value, activeModal)">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

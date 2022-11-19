@@ -1,0 +1,81 @@
+.borderStyle {
+    border-right: 2px solid #6666666b;
+}
+
+.styleTitle {
+    background: rgba(242, 53, 28, 1);
+    height: 20%;
+}
+
+.styleLabel {
+    padding-top: 1%;
+    color: white;
+    font-size: 20px;
+}
+
+.contendorForm {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+.iconStyle {
+    color: black;
+    margin-right: 2%;
+}
+
+.styleAdvertencia {
+    background: #fe9126;
+    color: white;
+}
+
+.styleTextoColor {
+    color: rgba(242, 53, 28, 1);
+}
+
+.boton-Rojo {
+    color: #fff;
+    background-color: rgba(242, 53, 28, 1);
+    border-color: rgba(242, 53, 28, 1);
+    margin-top: 10%;
+}
+
+.iconColor {
+    color: white;
+    padding-right: 5px !important;
+}
+
+.iconColorTwo {
+    color: rgba(242, 53, 28, 1);
+    padding-right: 5px !important;
+}
+
+.marginDiv {
+    padding-top: 6% !important;
+}
+
+.margenContainer {
+    margin-top: 7%;
+    margin-bottom: 7%;
+}
+
+.margenContainerTwo {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.fontNombre {
+    font-size: 20px;
+    color: black !important;
+}
+
+.boton-Azul {
+    background: white;
+    color: #1f97ae;
+    border: 2px solid #1f97ae;
+}
+
+.iconColorAzul {
+    color: #1f97ae;
+    padding-right: 5px !important;
+}

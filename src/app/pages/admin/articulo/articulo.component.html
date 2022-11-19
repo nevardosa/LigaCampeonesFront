@@ -1,0 +1,152 @@
+<div class="ml-5 mr-5 sm-2">
+    <div class="row">
+        <div class="col-lg-10 col-md-9 mt-4 text-center">
+            <h4 Class="font-weight-bold">MÓDULO<span class="colorTitle font-weight-bold">ADMINISTRACIÓN DE ARTÍCULOS</span></h4>
+        </div>
+        <div class="col-lg-2 col-md-3 mt-4 no-padding">
+            <button routerLink="/administrador/articulo/nuevo" class="btn btn-danger float-right boton-Rojo btn-block btn-sm" >
+                <i class="fa fa-plus iconColor" aria-hidden="true"></i>
+                Crear artículo
+            </button>
+        </div>
+    </div>
+    <br>
+    <div>
+        <form [formGroup]="formaConsultaRegistros" (ngSubmit)="cambiarCantRegistros()">
+            <div class="row">
+                <div class="input-group col-3">
+                    <input type="text" min="1" class="form-control" formControlName="inputRegistros" placeholder="Cant. Registros" [class.is-invalid]="RegistrosNoValido" >
+                    <div class="input-group-append">
+                      <button type="submit"  class="btn btn-danger colorButtonDanger2 btn-red"  
+                       [disabled]="formaConsultaRegistros.invalid">
+                          >
+                      </button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="RegistrosNoValido" >
+                <div *ngFor="let validation of count_validation_messages.inputRegistros">
+                    <small  class="text-danger" *ngIf="validarError(formaConsultaRegistros,'inputRegistros', validation.type)">{{validation.message}}</small>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <form class="form-inline" [formGroup]="formularioBusqueda">
+        <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+            <input type="text" formControlName="inptProducto" class="form-control w-100" placeholder="Nombre Producto" />
+        </div>
+        <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+            <select class="form-control w-100" id="inputCategoria" formControlName="inptCategoria" >
+                <option value="" selected>Seleccione una categoria</option>
+                <option *ngFor="let item of categorias" [value]="item.idCategoria">{{item.nombreCategoria}}</option> 
+            </select>
+        </div>
+        
+        <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+            <select class="form-control w-100" id="inputEstado" formControlName="inptEstado">
+                <option value="" selected>Seleccione el estado</option>
+                <option value='1' >Publicado</option>
+                <option value='0'>Borrador</option>
+                </select>
+        </div>
+        
+        <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+            <select class="form-control w-100" formControlName="inptDestacado">
+                <option value="" selected>Seleccion de destacado</option>
+                <option value='1' >Destacado</option>
+                <option value='0'>No Destacado</option>
+            </select>
+        </div>
+
+        <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+                <select class="form-control w-100" formControlName="inptRedimido">
+                    <option value="" selected>Seleccione de redimido</option>
+                    <option value='1' >Redimido</option>
+                    <option value='0'>No Redimido</option>
+                </select>
+        </div>
+        
+        <button type="button" class="form-group btn btn-danger btn-red colorButtonDanger col-lg-1 col-md-1 col-sm-2" (click)="buscar()">
+            <i class="fa fa-search iconColor"></i>
+            Buscar
+        </button>
+        <button type="button" class="form-group btn btn-danger btn-red colorButtonDanger col-lg-1 col-md-1 col-sm-2" (click)="limpiar()">
+            <i class="fa fa-refresh iconColor"></i>
+            Limpiar
+        </button>
+
+    </form>
+
+    <div class="alert alert-warning text-center mt-3" *ngIf="cargaCompleta && (articulosArray && articulosArray.length == 0)" >
+        <h4 class="alert-heading">No hay registros</h4>
+        <p>
+            <i class="fa fa-exclamation fa-2x"></i>
+        </p>
+    </div>
+
+    <div *ngIf="cargaCompleta && (articulosArray && articulosArray.length >0)"   class="row mt-2">
+        <div class="col-md-12 border">
+            <h6 class="font-weight-bold text-center mt-2">LISTA DE ARTÍCULOS</h6>
+        </div>
+        <table class="table table-bordered table-responsive-md ">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Cant.</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Destacado</th>
+                    <th scope="col">Más redimido</th>
+                    <th scope="col">Eliminar</th>
+                    <th scope="col">Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of articulosArray| paginate: {
+                    itemsPerPage: tamanoPagina,
+                    currentPage: numPag,
+                    totalItems: totalRegistros };let i = index" [class.active]="i == currentIndex">
+                    <th scope="row" class="comentario">{{item.idProducto}}</th>
+                    <td>{{item.nombreCategoria}}</td>
+                    <td>{{item.titulo}}</td>
+                    <td class="control-ellipsis ">
+                        <span class="ellipsis pos-absolute">{{item.descripcionCorta}}</span>
+                    </td>
+                    <td class="centrar-cont-celda"><img [src]="obtenerImagen(item.imagen)" [ngClass]="addClass(item.imagen)" class=" control-size"></td>
+                    <td>{{item.unidadesDisponibles}}</td>
+                    <td>{{ (item.estado == 1 ) ? 'Publicado': 'Borrador'}}</td>
+                    <td>
+                        <div class="col-sm-2" >
+                            <label class="switch">
+                            <input type="checkbox" [checked]='item.destacado==1' (change)="cambioDestacado($event,item)">                    
+                            <span class="slider round"></span> 
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-sm-2" >
+                            <label class="switch">
+                            <input type="checkbox" [checked]='item.masRedimido==1' (change)="cambioRedimido($event,item)">           
+                            <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <button class="fa fa-times btn btn-danger boton-Rojo btn-circle" (click)="borrarArticulo(item)"></button>
+                    </td>
+                    <td class="text-center">
+                        <button class="fa fa-pencil-square-o btn btn-info btn-circle" (click)="editarArticulo(item)"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="clearfix" *ngIf="totalRegistros > 0 ">
+        <pagination-controls class="d-flex justify-content-end" responsive="true" previousLabel="Anterior" nextLabel="Siguiente"
+            (pageChange)="consultarArticulos($event)"></pagination-controls>
+    </div>   
+</div>

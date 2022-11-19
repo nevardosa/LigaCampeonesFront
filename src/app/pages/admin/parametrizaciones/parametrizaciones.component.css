@@ -1,0 +1,93 @@
+input[type="text"] {
+    width: 100%;
+}
+
+td.control-ellipsis {
+    position: relative !important;
+    padding: 1em;
+}
+.ellipsis {
+    /* position: absolute; */
+    width: 50em;
+    padding: 1em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: flow-root;
+    text-align: justify;
+}
+
+table {
+    width: 90%;
+    margin:1rem auto;
+ }
+
+.mat-header-cell{
+    color: rgba(204, 22, 22, 0.582);
+}
+ .contenedor {
+    display: flex;
+    flex-direction: column;
+    margin:1rem auto;    
+    box-shadow: -1px 3px 66px 0px rgba(0, 0, 0, 0.342);
+    padding: 1rem;
+}   
+
+.table td{
+    vertical-align: middle;
+    text-align: justify;
+    padding: 1em;
+}
+.table th{
+    
+    padding-left: 2em;
+}
+
+th, td { 
+    overflow: hidden; 
+    width: 50em;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .example-headers-align .mat-form-field + .mat-form-field {
+    margin-left: 8px;
+  }
+  
+ 
+.mat-column-Nombre {
+    width: 30% !important;
+}
+
+.box {
+    display: flex;
+    flex-direction: column
+}
+.boxTipoSolicitud {    
+    margin: auto;
+    padding: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+  }
+
+  .item{
+    padding: 5px;
+    width: 10em;
+    margin: 5px;
+
+  }
+  .center {
+    margin: auto ;
+    width: 20%;
+    margin-left:2em;
+    padding: auto;
+    text-align: center;
+  }

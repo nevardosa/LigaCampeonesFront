@@ -1,0 +1,540 @@
+<div class="container" style="font-size: 20px">
+    <div class="row">
+        <div class="col-lg-12 text-center align-middle margin-bannerText">
+            <h1 class=" pull-center">CONFIGURAR <strong><span class="colorTitle">BANNERS/TEXTOS</span></strong>
+            </h1>
+        </div>
+    </div>
+    <div class="responsive text-center">
+        <mat-tab-group mat-stretch-tabs>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle ">
+                        <h3 class="pull-center"><strong><span class="colorTitle">Términos y Condiciones</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+                <div class="row m-4">
+                    <div class="col-md-10 offset-md-1">
+                        <div class="contenedor">
+                            <table mat-table [dataSource]="dataSourceTerminos" class="table ">
+                                <ng-container matColumnDef="nombre">
+                                    <th scope="col" class="text-justify borde-derecho " mat-header-cell
+                                        *matHeaderCellDef>
+                                        Nombre
+                                    </th>
+                                    <td *matCellDef="let element">
+                                        <span class="text-justify"><strong>{{element.name}}</strong>
+                                        </span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="descripcion">
+                                    <th scope="col" class="text-justify " mat-header-cell *matHeaderCellDef>
+                                        Descripcion
+                                    </th>
+                                    <td class="control-ellipsis" mat-cell *matCellDef="let element">
+                                        <span class="ellipsis">{{ element.desc | titlecase }}</span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Accion">
+                                    <th scope="col" class="text-justify " mat-header-cell *matHeaderCellDef> Acción
+                                    </th>
+                                    <td mat-cell *matCellDef="let element; let i = index">
+                                        <div class="btn-group">
+                                            <button class="btn-lg btn btn-outline-info" id="MTextoEnriquecido"
+                                                data-toggle="modal" (click)="cargarTerminos(i)"
+                                                data-target="#ModalTextoEnriquecido">Ver
+                                                Detalle</button>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="ColumnsTerminos"></tr>
+                                <tr mat-row *matRowDef="let row; columns: ColumnsTerminos;"
+                                    (click)="selection.toggle(row)">
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle ">
+                        <h3 class="pull-center"><strong><span class="colorTitle">Otros</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+                <div class="row m-4">
+                    <div class="container">
+                        <form [formGroup]="politicaForm" novalidate>
+                            <div class="container div-externo">
+                                <div class="row col-md-10 div-separador">
+                                    <div class="form-group col-md-12">
+                                        <label><strong>Pop up Políticas: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Activar: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <mat-slide-toggle [color]="color" formControlName="estadoPolitica">
+                                        </mat-slide-toggle>
+                                    </div>
+
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Título: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <input text="text" class="form-control" formControlName="tituloPolitica"
+                                            matInput placeholder="Titulo Política" required />
+                                    </div>
+
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Contenido: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <textarea text="text" class="form-control" formControlName="politica" matInput
+                                            placeholder="Política" required></textarea>
+                                    </div>
+                                    <div class="col-md-12 div-space mb-4">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                [disabled]="!politicaForm.valid || politicaForm.pristine"
+                                                (click)="guardarPoliticaForm(politicaForm.value)">Guardar</button>
+                                            <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                                                (click)="limpiarForm(0)">Borrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <form [formGroup]="contactanosForm" novalidate>
+                            <div class="container div-externo">
+                                <div class="row col-md-10 div-separador">
+                                    <div class="form-group col-md-12">
+                                        <label><strong>Contáctanos: </strong></label>
+                                    </div>
+
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Texto: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <input text="text" class="form-control" formControlName="texto" matInput
+                                            placeholder="Texto" required />
+                                    </div>
+
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Correo: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <input text="text" class="form-control" formControlName="correo" matInput
+                                            placeholder="Correo" required />
+                                    </div>
+                                    <div class="col-md-12 div-space mb-4">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                [disabled]="!contactanosForm.valid || contactanosForm.pristine"
+                                                (click)="guardarContactanosForm(contactanosForm.value)">Guardar</button>
+                                            <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                                                (click)="limpiarForm(1)">Borrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form [formGroup]="componenteFlotanteForm" novalidate>
+                            <div class="container div-externo">
+                                <div class="row col-md-10 div-separador">
+                                    <div class="form-group col-md-12">
+                                        <label><strong>Componente Flotante: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Activar: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <mat-slide-toggle [color]="color" formControlName="estadoComponenteFlotante">
+                                        </mat-slide-toggle>
+                                    </div>
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Nombre: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <input text="text" class="form-control"
+                                            formControlName="nombreComponenteFlotante" matInput placeholder="Nombre"
+                                            required />
+                                    </div>
+
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Url: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <input text="text" class="form-control" formControlName="urlComponenteFlotante"
+                                            matInput placeholder="Url" required />
+                                    </div>
+                                    <div class="col-md-12 div-space mb-4">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                [disabled]="!componenteFlotanteForm.valid || componenteFlotanteForm.pristine"
+                                                (click)="guardarcomponenteFlotanteForm(componenteFlotanteForm.value)">Guardar</button>
+                                            <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                                                (click)="limpiarForm(3)">Borrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form [formGroup]="diasInactUsuarioForm" novalidate>
+                            <div class="container div-externo">
+                                <div class="row col-md-10 div-separador">
+                                    <div class="form-group col-md-12">
+                                        <label><strong>Vencimiento Usuarios: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Dias: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <input text="text" class="form-control"
+                                            formControlName="diasInactivacionComponente" matInput placeholder="Días"
+                                            required />
+                                    </div>
+                                    <div class="col-md-12 div-space mb-4">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                [disabled]="!diasInactUsuarioForm.valid || diasInactUsuarioForm.pristine"
+                                                (click)="guardarDiasInactUsuarioForm(diasInactUsuarioForm.value)">Guardar</button>
+                                            <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                                                (click)="limpiarForm(3)">Borrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form [formGroup]="vencimientoXInactivacionForm" novalidate>
+                            <div class="container div-externo">
+                                <div class="row col-md-10 div-separador">
+                                    <div class="form-group col-md-12">
+                                        <label><strong>Activacion de vencimiento por inactivación Usuarios: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-2 div-space">
+                                        <label><strong>Estado: </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-10 div-space">
+                                        <mat-slide-toggle [color]="color" formControlName="inputEstadoVencimiento">
+                                        </mat-slide-toggle>
+                                    </div>
+                                    
+                                    <div class="col-md-12 div-space mb-4">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                [disabled]="!vencimientoXInactivacionForm.valid || vencimientoXInactivacionForm.pristine"
+                                                (click)="guardarVencimientoXInactivacionForm(vencimientoXInactivacionForm.value)">Guardar</button>
+                                            <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                                                (click)="limpiarForm(3)">Borrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle ">
+                        <h3 class="pull-center"><strong><span class="colorTitle">Imagenes</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+                <div class="row m-4">
+                    <table mat-table [dataSource]="dataSourceImagenes" class="table ">
+                        <ng-container matColumnDef="nombre">
+                            <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                                Nombre
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="text-center"><strong>{{element.nombre}}</strong></span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="descripcion">
+                            <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                                Descripcion
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="text-center"><strong>{{element.descripcion}}</strong></span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="img">
+                            <th scope="col" class="text-center" mat-header-cell *matHeaderCellDef>
+                                Imagen
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <img class="imagen_banner" [src]="element.img" alt="">
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Accion">
+                            <th scope="col" class="text-center " mat-header-cell *matHeaderCellDef> Acción
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="btn-group-vertical">
+                                    <div>
+                                        <button type="button" class="btn-block btn btn-outline-info btn-file"><i
+                                                class="fas fa-plus fa-2x mr-2"></i>
+                                            Cargar/Reemplazar Imagen
+                                            <input [writeFile]="true" type="file" accept="image/*"
+                                                (change)="updateImgInicio($event)" />
+                                        </button>
+                                    </div>
+                                    <div *ngIf="btnGuardarIn" class="div-space">
+                                        <button type="button" class="btn-block btn btn-success"
+                                            (click)="guardarImagenInicio()">
+                                            Guardar Imagen
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <strong>Formato: </strong><span> jpg, png o gif</span>
+                                    </div>
+                                    <div>
+                                        <strong>Tamaño: </strong><span> 1280px ancho x 400px alto</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="ColumnsImagenes"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ColumnsImagenes;"
+                            (click)="selectionImagenes.toggle(row)">
+                        </tr>
+                    </table>
+                    <div class="boxBanner">
+                        <div class="hide">
+                            <img class="imagen_banner" *ngIf="previewNewBanner != null" [src]="previewNewBanner" alt="">
+                        </div>
+                        <div class="hide">
+
+                        </div>
+                        <div class="hide">
+
+                        </div>
+                        <div>
+                            <div>
+                                <button [disabled]="!btnNewBanner" type="button"
+                                    class="btn-block btn btn-outline-info btn-file"><i
+                                        class="fas fa-plus fa-2x mr-2"></i>
+                                    Agregar Nueva Imagen
+                                    <input [disabled]="!btnNewBanner" [writeFile]="true" type="file" accept="image/*"
+                                        (change)="updateImgNewBanner($event)" />
+                                </button>
+                            </div>
+                            <div class="div-space" *ngIf="msgBanner">
+                                <span class="colorTitle">* Permitido máximo 5 imágenes para el Banner.</span>
+                            </div>
+                            <div *ngIf="previewNewBanner != null" class="div-space">
+                                <button type="button" class="btn-block btn btn-success"
+                                    (click)="guardarImagenBannerNew()">
+                                    Guardar Imagen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boxBanner">
+
+                        <!-- <div class="col-md-6 div-space2">
+                            <img class="imagen_banner" *ngIf="previewNewBanner != null" [src]="previewNewBanner" alt="">
+                        </div> -->
+
+                        <div>
+                            <div class="mt-4">
+                                <strong>Banner Principal: </strong>
+                            </div>
+                            <div>
+                                <span>Es la imagen ubicada en la <br>parte superior del módulo de
+                                    <br>redenciones.</span>
+                            </div>
+                        </div>
+                        <table class="table table-responsive-md w-auto">
+                            <tbody>
+                                <tr *ngFor="let Banners of previewBanners;let i = index">
+                                    <td *ngIf="Banners != null">
+                                        <img class="imagen_banner" [src]="Banners">
+                                    </td>
+                                    <td *ngIf="Banners != null">
+                                        <div>
+                                            <button type="button" class="btn-block btn btn-outline-info btn-file"><i
+                                                    class="fas fa-plus fa-2x mr-2"></i>
+                                                Cargar/Reemplazar Imagen
+                                                <input [writeFile]="true" type="file" accept="image/*"
+                                                    (change)="updateImgBanner($event, i)" />
+                                            </button>
+                                        </div>
+                                        <div *ngIf="btnGuardarBan == i + 1" class="div-space">
+                                            <button type="button" class="btn-block btn btn-success"
+                                                (click)="actualizarImagenBanner(Banners, i)">
+                                                Guardar Imagen
+                                            </button>
+                                        </div>
+                                        <div class="div-space">
+                                            <button type="button" class="btn-block btn btn-danger btn-color"
+                                                (click)="EliminarImagenBanner(Banners, i)">
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <strong>Formato: </strong><span> jpg, png o gif</span>
+                                        </div>
+                                        <div>
+                                            <strong>Tamaño: </strong><span> 1280px ancho x 400px alto</span>
+                                        </div>
+                                    </td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle ">
+                        <h3 class="pull-center"><strong><span class="colorTitle">Pqrs</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+
+
+                <div class="row m-4">
+                    <div class="container">
+
+                        <mat-accordion class="example-headers-align">
+                            
+                            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        General
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        Configuración para pqrs
+                                        <span class="fas fa-tools"></span>
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <div *ngIf="cargueCompletoPQR">
+                                    <div class="row">
+                                        <div class="form-group col-md-12 ">
+                                            <button type="submit"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                (click)="guardarPropiedadesPQR()">Guardar</button>
+                                        </div>
+                                    </div>
+
+                                    <form [formGroup]="formularioDinamicoPQRForm">
+                                        <div *ngFor="let obj of listaMensajesPQR , let i = index"
+                                            formArrayName="valoresPropiedad">
+                                            <div class="row div-separador">
+                                                <div class="form-group col-md-2 ">
+                                                    <label><strong>{{ obj.nombre }} </strong></label>
+                                                </div>
+                                                <div class="form-group col-md-10 p-0">
+                                                    <textarea class="form-control" rows="2"
+                                                        formControlName="{{i}}">{{ obj.valor }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Tipo Solicitud
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        Configuración tipo solicitud pqrs
+                                        <span class="fas fa-pen-square"></span>
+                                        
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <form class="form-inline"  [formGroup]="tipoSolicitudPqrsForm" novalidate>
+
+                                    <div class="row w-100 justify-content-end">
+                                          <div class="form-group mx-sm-2 mb-2">
+                                            <input type="text" class="form-control" formControlName="nuevoValor" placeholder="Ingrese el tipo de solicitud">
+                                          </div>
+                                          <button type="submit" class="btn btn-danger btn-color mb-2" (click)="agregarTipoSolicitudPQR()">Agregar</button>
+                                    </div>
+
+                                    <div  class="row w-100 justify-content-end p-1" formArrayName="valoresPqrsSolicitud"  *ngFor="let obj of listaTipoSolicitudPQR , let i = index">
+                                        <label class="form-group mx-sm-4"><strong>{{ obj.nombre }} </strong></label>
+                                        <mat-slide-toggle formControlName="{{i}}" [color]="color" class="form-group mx-sm-3"
+                                            value="{{ obj.valor }}">
+                                        </mat-slide-toggle>
+                                        
+                                        <button (click)="eliminarTipoSolicitudPQR(i)" type="button"
+                                            class="btn btn-danger btn-color pull-right ">
+                                            <i class="fa fa-trash " style="color: white;"> </i>
+                                        </button>
+                                    </div>
+
+                                    <div class="row w-100">
+                                        <div class=" col-md-12 div-space mb-4 form-group justify-content-center">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right m-1"
+                                                (click)="guardarTipoSolicitudPQR()">Guardar</button>
+                                        </div>
+                                    </div>
+                                   
+                                </form>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+        <!-- Modal para texto enriquecido Propiedades -->
+        <div class="modal fade" id="ModalTextoEnriquecido" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+                <div class="modal-content">
+                    <div class="modal-header btn-color">
+                        <h2 class="color-blanco"> Terminos</h2>
+                        <button class="close btnOn" aria-label="close" type="button" data-dismiss="modal">
+                            <span>
+                                <h1 class="color-blanco">&times;</h1>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <form [formGroup]="tycForm" novalidate>
+                            <div class="container div-externo">
+                                <div class="row col-md-10 div-separador">
+                                    <div class="form-group col-md-12">
+                                        <label><strong>Términos y Condiciones / Política del Concurso :
+                                            </strong></label>
+                                    </div>
+                                    <div class="form-group col-md-12 div-space">
+                                        <angular-editor formControlName="texto" [config]="editorConfig">
+                                        </angular-editor>
+                                    </div>
+                                    <div class="col-md-12 div-space mb-4">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                                                [disabled]="!tycForm.valid || tycForm.pristine"
+                                                (click)="guardartycForm(tycForm.value)">Guardar</button>
+                                            <button type="button" class=" btn-lg btn btn-info col-2 pull-right mr-2"
+                                                (click)="limpiarForm(2)">Borrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

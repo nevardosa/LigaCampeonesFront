@@ -1,0 +1,158 @@
+<div class="container">
+    <div class="col-md-12 text-center mt4">
+        <h5 *ngIf="!isEdicion" Class="font-weight-bold">CREAR<span class="colorTitle font-weight-bold">NUEVO
+                ARTÍCULO</span></h5>
+        <h5 *ngIf="isEdicion" Class="font-weight-bold">ACTUALIZAR<span
+                class="colorTitle font-weight-bold">ARTÍCULO</span></h5>
+        <hr>
+    </div>
+
+
+    <div class="container col-md-12" *ngIf="cargaCompleta">
+        <div class="border p-4">
+            <div class="col text-center">
+                <label class="text-center textoRed mt-2 " *ngIf="!isEdicion">Añade un nuevo artículo con los siguientes
+                    datos:</label>
+                <label class="textoRed mt-2" *ngIf="isEdicion">Actualiza un artículo con los siguientes datos:</label>
+            </div>
+            
+            <form class="mt4" [formGroup]="formaArticulo" (ngSubmit)="guardar()">
+                <div class="form-group row">
+                    <label for="inputCategoria" class="col-sm-4 col-form-label">ID:</label>
+                    <label for="inputCategoria" class="col-sm-8 col-form-label">{{
+                        this.formaArticulo.get('idProducto').value }}</label>
+                </div>
+                <div class="form-group row">
+                    <label for="inputCategoria" class="col-sm-4 col-form-label">Categoria:</label>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            
+                            <div *ngFor="let item of listaCategorias , let i = index" class="flex-container" formArrayName="idCategoria">
+                              <label>
+                                <input type="checkbox" formControlName="{{i}}"  />
+                                {{item.nombreCategoria}}
+                              </label>
+                            </div>
+                        </div>
+                        <small *ngIf="categoriaNoValido" class="text-danger">Debe seleccionar categoria</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputTitulo" class="col-sm-4 col-form-label">Título:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control form-control-sm" id="inputTitulo"
+                            formControlName="titulo" [class.is-invalid]="tituloNoValido">
+                        <small *ngIf="tituloNoValido" class="text-danger">Debe ingresar titulo</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputDescripcion" class="col-sm-4 col-form-label">Descripción:</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control-sm" id="inputDescripcion" cols="50" rows="2" class="form-control"
+                            formControlName="descripcionCorta" [class.is-invalid]="descripcionNoValido"></textarea>
+                        <small *ngIf="descripcionNoValido" class="text-danger">Debe ingresar descripcion</small>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputDescripcion" class="col-sm-4 col-form-label">Descripción Larga:</label>
+                    <div class="col-sm-8">
+                        <angular-editor formControlName="informacionDetallada" [config]="editorConfig"
+                            [class.is-invalid]="detalleNoValido"></angular-editor>
+                        <!-- <textarea class="form-control-sm" id="inputDescripcionLarga" cols="50" rows="2" class="form-control" formControlName="informacionDetallada" [class.is-invalid]="detalleNoValido"></textarea> -->
+                        <small *ngIf="detalleNoValido" class="text-danger">Debe ingresar informacion
+                            detallada</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="file-input" class="col-sm-4 col-form-label">Imagen:</label>
+                    <div class="col-sm-3" id="file-input">
+                        <img [src]="obtenerImagen()" class="cargar-img" [ngClass]="addClass()">
+                    </div>
+                    <div class="col-sm-5 right padding-cargar-img">
+                        <span class="btn btn-outline-info btn-file btn-cargar-img">
+                            <i class="fa fa-plus"></i>
+                            Cargar imagen
+                            <input [writeFile]="true" type="file" formControlName="imagen" id="filesId"
+                                name="archivoImagen" accept="image/*" (change)="updateSource($event)" />
+                        </span>
+                        <span class="comentario">(.jpg .png .gif)</span>
+                    </div>
+                    <div *ngIf="ImagenNoValida">
+                        <div *ngFor="let validation of count_validation_messages.imagen">
+                            <small class="text-danger"
+                                *ngIf="validarError(formaArticulo,'imagen', validation.type)">{{validation.message}}</small>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label for="inputCantidad" class="col-sm-4 col-form-label">Cantidad:</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="0" class="form-control form-control-sm" id="inputCantidad"
+                            formControlName="unidadesDisponibles" [class.is-invalid]="cantidadNoValido">
+                        <small *ngIf="cantidadNoValido" class="text-danger">Debe ingresar cantidad</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputCosto" class="col-sm-4 col-form-label">Costo:</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="0" class="form-control form-control-sm" id="inputCostoProducto"
+                            formControlName="costos" [class.is-invalid]="costoNoValido">
+                        <small *ngIf="costoNoValido" class="text-danger">Debe ingresar el valor del
+                            articulo</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPuntos" class="col-sm-4 col-form-label">Puntos:</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="0" class="form-control form-control-sm" id="inputPuntosProducto"
+                            formControlName="puntos" [class.is-invalid]="puntosNoValido">
+                        <small *ngIf="puntosNoValido" class="text-danger">Debe ingresar la cantidad de puntos
+                            con la que
+                            se redime el articulo</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEstado" class="col-sm-4 col-form-label">Estado:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control form-control-sm" id="inputEstado" formControlName="estado"
+                            [class.is-invalid]="estadoNoValido">
+                            <option value='1'>Publicado</option>
+                            <option value='0'>Borrador</option>
+                        </select>
+                        <small *ngIf="estadoNoValido" class="text-danger">Debe seleccionar un estado</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputDestacado" class="col-sm-4 col-form-label">Destacado:</label>
+                    <div class="col-sm-8">
+                        <label class="switch">
+                            <input type="checkbox" formControlName="destacado" id="inputDestacado">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputRedimido" class="col-sm-4 col-form-label">Más redimido:</label>
+                    <div class="col-sm-8">
+                        <label class="switch">
+                            <input type="checkbox" formControlName="masRedimido" id="inputRedimido">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn" *ngIf="!isEdicion"
+                    [disabled]="formaArticulo.invalid || categoriaNoValido">Crear nuevo artículo</button>
+
+                <button type="submit" class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn" *ngIf="isEdicion"
+                    [disabled]="formaArticulo.invalid || !this.formaArticulo.dirty || categoriaNoValido">Actualizar artículo</button>
+
+                <button class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn" routerLink="/administrador/articulo">
+                    <i class="fa fa-arrow-left"></i> Cancelar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

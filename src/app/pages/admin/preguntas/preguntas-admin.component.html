@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="container">
+        <div class="row div-space2 padreParmetrizacion">
+            <div class="col-lg-3 div-referido hijoParmetrizacion">
+                <div class="mat-elevation-z8">
+                    <mat-selection-list [multiple]="false">
+                        <mat-list-option *ngFor="let modulo of listModulos;let i = index" [value]="modulo">
+                            <button type="button" class="btn-block btn btn-outline-danger"
+                                (click)="getView(modulo)">{{modulo}}</button>
+                        </mat-list-option>
+                    </mat-selection-list>
+                </div>
+            </div>
+
+            <div class="col-lg-9 container">
+                <div *ngIf="view == 'Preguntas Frecuentes'">
+                    <app-pregunta-frecuentes>
+                    </app-pregunta-frecuentes>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

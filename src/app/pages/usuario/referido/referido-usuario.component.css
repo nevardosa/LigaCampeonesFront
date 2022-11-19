@@ -1,0 +1,41 @@
+.font-table {
+    font-size: 9px;
+}
+
+
+.boton-Rojo {
+    color: #fff;
+    background-color: rgba(242, 53, 28, 1);
+    border-color: rgba(242, 53, 28, 1);
+}
+
+
+.tamanioImg {
+    max-width: 60%;
+    height: auto;
+}
+
+.margin :checked {
+    margin: 0 10px;
+}
+
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+    background-color: #138496 !important;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #138496 !important;
+    transition: transform .5s;
+    transform: scale(1.2);
+}
+
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #138496 !important;
+}
+
+.btnOn { 
+    border: none solid rgba(242, 53, 28, 1) ;   
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}

@@ -1,0 +1,49 @@
+<div class="container mt-4 mb-4" *ngIf="divVisible">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h4>MÓDULO<span class="colorTitle">CARGA DE ARCHIVOS</span></h4>
+            <hr>
+        </div>
+    </div>
+    <div class="row dashed">
+        <div class="col-md-12 mt-4 text-center">
+            <label>
+                En esta opción puedes cargar el archivo descargado en el módulo de pedidos, indicando si fue <br>
+                procedente el canje de las solicitudes con estado pendiente, para que el sistema realice el descuento <br>
+                de los puntos del canje o informar la devolución de puntos si no fue procedente el canje <br>
+            </label>
+        </div>
+        <div class="col-md-12 mb-4 text-center">
+            <input type="file" (change)="onFileChange($event)" multiple="false" />
+        </div>
+    </div>
+</div>
+<div class="container mt-4 mb-4" *ngIf="!divVisible">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>MÓDULO<span class="colorTitle">CARGA DE ARCHIVOS</span></h4>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-danger float-right ml-3 colorButtonDanger2" (click)="procesarArchivo()">
+                <i class="fa fa-check-square-o iconColor" aria-hidden="true"></i>
+                Procesar archivo
+            </button>
+            <button class="btn btn-secondary float-right" (click)="regresarCargaArchivo()">
+                <i class="fa fa-arrow-left iconColor" aria-hidden="true"></i>
+                Cambiar archivo
+            </button>
+        </div>
+    </div>
+    <br>
+    <div class="add-scroll">
+        <table class="table table-bordered size-table">
+            <tbody>
+          <tr *ngFor="let row of data">
+                <td *ngFor="let val of row" class="control-ellipsis ">
+                    <span class="ellipsis ">{{val}}</span>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>

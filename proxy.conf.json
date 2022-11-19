@@ -1,0 +1,13 @@
+{
+    "/EXP_ChampionsLeague/": {
+        "target": "http://172.24.42.212:8002/",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        
+        "headers": {
+            "Connection": " keep-alive "
+        }
+    }
+   
+}

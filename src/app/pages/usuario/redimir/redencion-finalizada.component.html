@@ -1,0 +1,37 @@
+<div class="container margenContainerTwo" >
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="iconColorTwo"><i class="fa fa-check iconColorTwo" aria-hidden="true"></i>Producto redimido</h3>
+        </div>
+    </div>
+    
+<section *ngFor="let pedido of pedidoDetallado; let i = index">
+    <hr>
+    <div class="row">
+        <div class="col-md-3">
+            <img class="text-center w-100 " [src]="pedido.producto.imagen" [ngClass]="addClassOpacar(pedido.producto)">
+        </div>
+        <div class="col-md-9">
+            <strong><p class="fontNombre">{{ pedido.producto.titulo }}</p></strong>
+            <strong class="styleTextoColor"><h4>{{ pedido.producto.puntos }} PTS</h4></strong>
+            <strong><p [totalProductos]="pedido.cantidad">Cantidad {{ pedido.cantidad }}</p></strong>
+        </div>
+    </div>
+    <hr>  
+</section>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <h6 class="font-weight">Total productos<span class="colorTitle">{{ totalProductos }} </span></h6>
+        </div>
+        <div class="col-md-12 ">
+            <h6 class="font-weight">Total<span class="colorTitle">{{ totalPuntos }} PTS</span></h6>
+        </div>
+        <br>
+        <button type="button" class="btn boton-Azul btn-block mb-4" [routerLink]="['/usuario/inicio']">
+            Continuar comprando
+        </button>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,156 @@
+table {
+  width: 100%;
+}
+
+th {
+  font-weight: bold;
+}
+
+mat-selection-list {
+  max-height: 200px;
+  overflow: auto;
+}
+
+:host ::ng-deep .selection .mat-list-option[aria-selected="true"] {
+  background: #f53201 !important;
+}
+
+:host ::ng-deep .selection .mat-list-option[aria-selected="true"] .mat-list-text {
+  color: #ffffff !important;
+}
+
+div-find{
+  margin-left: 10px;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+.btnOn {
+  border: none solid rgba(242, 53, 28, 1);
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+  text-align: right;
+}
+
+.mat-list-option {
+  text-align: left;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+  text-align: left;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: block;
+  text-align: left;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.padding {
+  padding: 0.5rem
+}
+
+.rowRight{
+  text-align: right;
+}
+
+.rightExpanded {
+  position: relative;
+  right: 10px;
+  width: auto;
+  padding: 2px;
+}
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+  text-align: left;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px;
+  height: 98px !important;
+  width: 150px !important;
+  display: block;
+}
+
+.img:hover {
+  transform: scale(3.75);
+}
+
+#expandedImg {
+  width: 100% !important;
+  height: auto !important;
+}
+
+img:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+
+.transition {
+  -webkit-transform: scale(1.8);
+  -moz-transform: scale(1.8);
+  -o-transform: scale(1.8);
+  transform: scale(1.8);
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/**/
+.column {
+  float: left;
+  width: 20%;
+  height: auto;
+  margin: 0;
+  padding: 3px;
+}
+
+.column img:hover {
+  opacity: 1;
+}
+
+/* Closable button inside the expanded image */
+.closebtn {
+  position: inherit;
+  top: 15px;
+  right: 15px;
+  color: black;
+  font-size: 35px;
+  cursor: pointer;
+}

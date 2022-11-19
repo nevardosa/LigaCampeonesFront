@@ -1,0 +1,14 @@
+<div class="forms-group">
+    <i><img class="imagen_sesion" src="./assets/img/AlertSesision.png"/></i>    
+    <div class="content center">
+        <div mat-dialog-content>
+            <h2><strong class="letra-color-negro">{{message}}</strong></h2>
+        </div>
+        <p class="text-center h6">¿Desea cerrar sesión?</p>
+        <div class="container  float-right col-md-12 p-3">
+            <button class="btn-sm texto-blanco btn btn-success mr-2" (click)="onClickNO()">Continuar</button>
+            <button class=" btn-sm color-rojo-Claro btn btn-danger" [mat-dialog-close]="true">Cerrar Sesion
+                ({{time.minutes}}:{{time.seconds}})</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,266 @@
+<div class="w-100 fondo-degradado mt-3 login-statico">
+    <div class="container" *ngIf="cargaCompleta">
+        <div class="container-fluid">
+            <div class="tabs-img">
+                <div class="collapse collaps-tap" id="collapseWidthExample">
+                    <div class="col-lg-12">
+                        <img src="assets/img/logo-liga-campeones.png" alt="" width="80%">
+                    </div>
+                    <div class="col-lg-12">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item col-lg-6" role="presentation">
+                                <button class="nav-link active col-lg-12 btn-azul liga-taps" id="home-tab"
+                                    data-toggle="tab" data-target="#home" type="button" role="tab" aria-controls="home"
+                                    aria-selected="true">{{
+                                    iniciarSesion }}</button>
+                            </li>
+                            <li class="nav-item col-lg-6" role="presentation">
+                                <button class="nav-link col-lg-12 btn-azul liga-taps" id="profile-tab" data-toggle="tab"
+                                    data-target="#profile" type="button" role="tab" aria-controls="profile"
+                                    aria-selected="false">{{
+                                    registrate }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active border-login" id="home" role="tabpanel"
+                            aria-labelledby="home-tab">
+                            <div class="col-lg-12 form-login" *ngIf="cargaCompleta">
+                                <div class="col-lg-12 d-flex mb-3">
+                                    <div class="col-lg-12 mt-4 formularioStyle">
+                                        <form [formGroup]="formaLogin" (ngSubmit)="Login()" class="form-login">
+                                            <div class="col-lg-12 d-flex">
+                                                <label class="labelStyle lbl-negrita-media">{{ UserPass }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 d-flex">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control input-login"
+                                                            placeholder="Cédula" formControlName="user"
+                                                            [class.is-invalid]="userNoValido">
+                                                    </div>
+                                                    <div class="input-group-addon btn-group-addon-user btn-group-add">
+                                                        <button class="btn form-control" aria-hidden="false"
+                                                            id="userIcon">
+                                                            <span class="fa fa-user"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="userNoValido" class="col-lg-12 d-flex">
+                                                    <div *ngFor="let validation of count_validation_messages.user"
+                                                        class="d-flex">
+                                                        <small class="text-danger"
+                                                            *ngIf="validarError(formaLogin,'user', validation.type)">{{validation.message}}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 d-flex">
+                                                    <div class="input-group">
+                                                        <input [type]="mostrarPass" class="form-control input-login"
+                                                            placeholder="Contraseña" formControlName="pass"
+                                                            [class.is-invalid]="passNoValido">
+                                                    </div>
+                                                    <div class="input-group-addon btn-group-addon btn-group-add">
+                                                        <button class="btn form-control" aria-hidden="false"
+                                                            id="exampleCheck1" type="button"
+                                                            (click)="mostrarPassword()">
+                                                            <span class="fa fa-eye-slash "></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 d-flex">
+                                                    <small *ngIf="passNoValido" class="text-danger">{{ ingresaPass
+                                                        }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 d-flex">
+                                                    <div class="input-group">
+                                                        <div class="inner-addon left-addon inputWIcon-select">
+                                                            <select class="form-control input-login"
+                                                                id="inputPerfilLogin" formControlName="perfilLogin"
+                                                                (change)="cargarToolTip(getPerfil())"
+                                                                [class.is-invalid]="perfilNoValido">
+                                                                <option value="" selected>Seleccione Perfil</option>
+                                                                <option *ngFor="let item of listPerfiles"
+                                                                    [value]="item.idPerfil">
+                                                                    {{item.nombrePerfil}}
+                                                            </select>
+                                                        </div>
+                                                        <div class="right-addon alignIconTool">
+                                                            <div class="tooltip-container">
+                                                                <i
+                                                                    class="fas fa-question-circle tooltip-trigger font-18 just-cont-end btn-group-add"></i>
+                                                                <div class="tooltip-one">
+                                                                    {{textToolTip}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 d-flex">
+                                                    <small *ngIf="perfilLoginNoValido" class="text-danger">{{
+                                                        ingresaPerfil }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 d-flex form-group">
+                                                <button type="submit"
+                                                    class="btn btn-danger btn-block colorButtonDanger btn-login col-lg-11 liga-taps">{{
+                                                    iniciarSesion }}</button>
+                                            </div>
+                                        </form>
+                                        <div class="col-md-12 text-center color-login">
+                                            <a href="#" data-toggle="modal" data-target="#modalPass">{{ olvidePass
+                                                }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade border-login" id="profile" role="tabpanel"
+                            aria-labelledby="profile-tab">
+                            <div class="d-flex justify-content-center form-login pb-3">
+                                <div class="col-lg-12" *ngIf="cargaCompleta">
+                                    <div class="col-lg-12 mt-5 mb-5 formularioStyle">
+                                        <form class="form-login col-lg-12" [formGroup]="formaRegister"
+                                            (ngSubmit)="consultarUsuarioSuccessFactor()">
+                                            <div class="col-lg-12 d-flex mb-2">
+                                                <label class="labelStyle lbl-negrita-media">{{ noRegistrado }}</label>
+                                            </div>
+                                            <div class="col-lg-12 d-flex">
+                                                <label class="labelStyle colorLabelText">{{ iniciaRegis }}</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 d-flex">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control input-login"
+                                                            placeholder="Documento" formControlName="cc"
+                                                            [class.is-invalid]="CedulaNoValido">
+                                                    </div>
+                                                    <div class="btn-group-addon-user btn-group-add">
+                                                        <button class="btn form-control" aria-hidden="false"
+                                                            id="userIcon2">
+                                                            <span class="fa fa-user icon"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 d-flex">
+                                                    <div *ngIf="CedulaNoValido" class="col-lg-12 d-flex">
+                                                        <div *ngFor="let validation of count_validation_messages.cc">
+                                                            <small class="text-danger"
+                                                                *ngIf="validarError(formaRegister,'cc', validation.type)">{{validation.message}}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="inner-addon left-addon inputWIcon-select">
+                                                        <select class="form-control input-login"
+                                                            id="inputPerfilRegistro" formControlName="perfilRegistro"
+                                                            (change)="cargarToolTip(getPerfilRegistro())"
+                                                            [class.is-invalid]="perfilNoValido">
+                                                            <option value="" selected>Seleccione Perfil</option>
+                                                            <option *ngFor="let item of listPerfilesRegistro"
+                                                                [value]="item.idPerfil">
+                                                                {{item.nombrePerfil}}
+                                                        </select>
+                                                    </div>
+                                                    <div class="right-addon alignIconTool btn-group-add">
+                                                        <div class="tooltip-container">
+                                                            <i
+                                                                class="fas fa-question-circle tooltip-trigger font-18"></i>
+                                                            <div class="tooltip-one">
+                                                                {{textToolTip}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 d-flex">
+                                                    <small *ngIf="perfilRegistroNoValido" class="text-danger">{{
+                                                        ingresaPerfil }}</small>
+                                                </div>
+                                            </div>
+                                            <button type="submit"
+                                                class="btn btn-primary btn-block colorButtonSuccess btn-login col-lg-11 liga-taps mt-5"
+                                                [disabled]="formaRegister.invalid">{{ registrame }}</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner d-block div-resp-img ">
+                    <div class="col-lg-12 d-flex" *ngIf="estComponente">
+                        <div
+                            class="col-lg-8 titulo-concurso color-blanco centrar-text-vertical oblique border-rad-sup-izq txt-center">
+                            <i class="fas fa-th-large cubo"></i> {{ participaConcursoUno }} <span
+                                class="fw-600 color-blanco oblique margin-lef-rigth-4"> {{ nombreConcurso }} </span> {{
+                            participaConcursoDos }}
+                        </div>
+                        <div
+                            class="col-lg-4 ir-concurso  color-blanco centrar-text-vertical border-rad-sup-der oblique txt-center">
+                            <a (click)="goToLink()" class="btn-flotante">{{ this.texto }} <span
+                                    class="fw-600 color-blanco text-normal"> > </span></a>
+
+                        </div>
+                    </div>
+                    <div class="btn-colapse btn-colapse-registro">
+                        <button *ngIf="!colapsible" class="btn-colapse btn-colapse-registro" type="button" data-toggle="collapse"
+                            data-target="#collapseWidthExample" aria-expanded="false"
+                            aria-controls="collapseWidthExample" (click)="colapse()">
+                            <i class="fas fa-chevron-double-left"></i>
+                        </button>
+                    </div>
+
+                    <div class="fondo w-100 img-login d-flex">
+                        <div class="btn-colapse-rigth">
+                            <button *ngIf="colapsible" class="btn-colapse-rigth" type="button" data-toggle="collapse"
+                                data-target="#collapseWidthExample" aria-expanded="false"
+                                aria-controls="collapseWidthExample" (click)="colapse()">
+                                <i class="fas fa-chevron-double-right"></i>
+                            </button>
+                        </div>
+                        <div class="w-100"
+                            [ngStyle]="{'background-image': 'url(' + inicioImg + ')', 'background-size': '100%', 'background-repeat': 'no-repeat' }">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 d-block preguntas-frec-relat">
+                <div class="modal" id="modalPass" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            
+                            <div class="modal-header">
+                                <h4 class="labelStyle"><b>Restablecer contraseña</b></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">X</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="m-4" [formGroup]="formaForget" (ngSubmit)="CreateLink()">
+                                    <label class="labelStyle"><b>Ingresa usuario</b></label>
+                                    <div class="form-group inner-addon left-addon">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <input type="text" class="form-control" placeholder="Cédula"
+                                            formControlName="CedulaCambio"
+                                            [class.is-invalid]="CedulaCambioContrasenaNoValido">
+                                        <div *ngIf="CedulaCambioContrasenaNoValido">
+                                            <div *ngFor="let validation of count_validation_messages.user">
+                                                <small class="text-danger"
+                                                    *ngIf="validarError(formaLogin,'user', validation.type)">{{validation.message}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger btn-block colorButtonDanger"
+                                        [disabled]="formaForget.invalid">Enviar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

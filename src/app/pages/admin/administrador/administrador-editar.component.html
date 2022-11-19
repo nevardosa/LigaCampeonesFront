@@ -1,0 +1,176 @@
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h4>{{ (isEdicion)?"EDITAR":"CREAR" }}<span class="colorTitle">ADMINISTRADOR</span></h4>
+        </div>
+    </div>
+    <div class="row mt-4 mb-4">
+        <div class="col md-4"></div>
+        <div class="col md-4 text-center">
+            <div class="container" id="contendorForm">
+                <form class="formularioStyle" [formGroup]="formaAdministrador" (ngSubmit)="guardar()">
+                    <p class="texto">Regístra un nuevo administrador digitando los siguientes datos:</p>
+                    <input class="form-control  mt-2" type="text" placeholder="Nombre" formControlName="nombres"
+                        [class.is-invalid]="NombreNoValido">
+                    <small *ngIf="NombreNoValido" class="text-danger">Debe ingresar nombre</small>
+
+                    <input class="form-control  mt-2" type="text" placeholder="Apellido" formControlName="apellido"
+                        [class.is-invalid]="ApellidoNoValido">
+                    <small *ngIf="ApellidoNoValido" class="text-danger">Debe ingresar apellido</small>
+
+                    <mat-form-field color="warn" appearance="fill" [style]="{ 'width' : '100%'}" class="mt-2">
+                        <input matInput [max]="maxDate" [matDatepicker]="picker" formControlName="FNacimiento" readonly
+                            placeholder="Fecha Nacimiento" [class.is-invalid]="FNacimientoNoValido">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <small *ngIf="FNacimientoNoValido" class="text-danger">Debe ingresar fecha de
+                        nacimiento</small>
+                    <small *ngIf="menorEdad" class="text-danger">El usuario debe ser mayor de
+                        edad</small>
+
+                    <input class="form-control" type="text" placeholder="Número de Documento"
+                        formControlName="cedula" [class.is-invalid]="CedulaNoValido">
+                    <div *ngIf="CedulaNoValido">
+                        <div *ngFor="let validation of count_validation_messages.cedula">
+                            <small class="text-danger"
+                                *ngIf="validarError(formaAdministrador,'cedula', validation.type)">{{validation.message}}</small>
+                        </div>
+                    </div>
+
+                    <select class="form-control mt-2" formControlName="canal" [class.is-invalid]="CanalNoValido">
+                        <option value="" selected>Seleccione canal</option>
+                        <option *ngFor="let item of canales" [value]="item">{{item}}</option>
+                    </select>
+                    <small *ngIf="CanalNoValido" class="text-danger">Debe seleccionar el canal</small>
+
+                    <input class="form-control  mt-2" type="text" placeholder="celular" formControlName="celular"
+                        [class.is-invalid]="NumeroCelularNoValido">
+
+                    <div *ngIf="NumeroCelularNoValido">
+                        <div *ngFor="let validation of count_validation_messages_celular.celular">
+                            <small class="text-danger"
+                                *ngIf="validarError(formaAdministrador,'celular', validation.type)">{{validation.message}}</small>
+                        </div>
+                    </div>
+
+                    <select class="form-control mt-2" id="inputDepartamento" formControlName="departamento"
+                        [class.is-invalid]="DepartamentoNoValido" (change)="cargarCiudades(getDepartamento())">
+                        <option value="" selected>Seleccione departamento</option>
+                        <option *ngFor="let item of listaDepartamentos" [value]="item.codigoDane">{{item.nombreLugar}}
+                        </option>
+                    </select>
+                    <small *ngIf="DepartamentoNoValido" class="text-danger">Debe seleccionar departamento</small>
+
+                    <select class="form-control mt-2" id="inputCiudad" formControlName="idCiudad"
+                        [class.is-invalid]="CiudadNoValido">
+                        <option value="" selected>Seleccione la ciudad</option>
+                        <option *ngFor="let item of listaCiudades" [value]="item.codigoDane">{{item.nombreLugar}}
+                        </option>
+                    </select>
+                    <small *ngIf="CiudadNoValido" class="text-danger">Debe seleccionar ciudad</small>
+
+                    <input class="form-control  mt-2" type="text" placeholder="Direccion" formControlName="direccion"
+                        [class.is-invalid]="DireccionNoValido">
+                    <small *ngIf="DireccionNoValido" class="text-danger">Debe ingresar direccion</small>
+
+                    <input class="form-control  mt-2" type="text" placeholder="Barrio" formControlName="barrio"
+                        [class.is-invalid]="BarrioNoValido">
+                    <small *ngIf="BarrioNoValido" class="text-danger">Debe ingresar barrio</small>
+
+                    <input type="email" class="form-control mt-2" placeholder="Correo" formControlName="correo"
+                        [class.is-invalid]="CorreoNoValido">
+                    <small *ngIf="CorreoNoValido" class="text-danger">Debe ingresar un correo valido</small>
+
+                    <select class="form-control mt-2" formControlName="tipoContrato" [class.is-invalid]="tipoContratoNoValido"
+                     (click)="cargarTerminoContrato($event)">
+                        <option value="" selected>Seleccione Tipo de contrato</option>
+                        <option  value="Terceros">Tercero</option>
+                        <option  value="Directo">Directo</option>
+                    </select>
+                    <small *ngIf="tipoContratoNoValido" class="text-danger">Debe ingresar Tipo de contrato</small>
+
+                    <br>
+                    <div class="input-group">
+                        <input [type]="fieldTextTypeClave ? 'text' : 'password'" class="form-control"
+                            formControlName="clave" [class.is-invalid]="ClaveNoValido" placeholder="Contraseña" />
+                        <div class="input-group-append" (click)="toggleFieldTextTypeClave()">
+                            <span class="input-group-text">
+                                <i class="fa"
+                                    [ngClass]="{'fa-eye-slash': !fieldTextTypeClave, 'fa-eye': fieldTextTypeClave}"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <small *ngIf="fieldTextTypeClave && !cambioClave">*Ejemplo "atjw=860*"
+                        de la estructura de la clave.</small>
+                    <small *ngIf="ClaveNoValido" class="text-danger">Clave no valida</small>
+
+                    <br>
+                    <div class="input-group">
+                        <input [type]="fieldTextTypeRptClave?'text':'password'" class="form-control"
+                            formControlName="repetirClave" [class.is-invalid]="RepetirClaveNoValido"
+                            placeholder="Repetir Contraseña">
+                        <div class="input-group-append" (click)="toggleFieldTextTypeRptClave()">
+                            <span class="input-group-text">
+                                <i class="fa"
+                                    [ngClass]="{'fa-eye-slash': !fieldTextTypeRptClave, 'fa-eye': fieldTextTypeRptClave }"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <small *ngIf="fieldTextTypeRptClave && !cambioRepClave">*Ejemplo "atjw=860*"
+                            de la estructura de la clave.</small>
+                    </div>
+                    <div>
+                        <small *ngIf="RepetirClaveNoValido" class="text-danger">Las claves no coinciden</small>
+                    </div>
+                    <label Class="labelGris">(La clave debe ser alfa numérica de minimo 6 caracteres que no tenga
+                        letras ni números consecutivos)</label>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalTyC" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close btnOn" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="container">
+                                    <div class="marginTyc">
+                                        <div #divTyC>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn"
+                        [disabled]="formaAdministrador.invalid || !this.formaAdministrador.dirty || clavesInvalidas()">{{
+                        (isEdicion)?"Editar":"Crear" }} Administrador</button>
+                    <button class="btn boton-Rojo btn-block mb-4 btn-sm margin-btn"
+                        routerLink="/administrador/administrador">
+                        <i class="fa fa-arrow-left"></i> Cancelar
+                    </button>
+
+                </form>
+                <div class="row mt-2">
+                    <div class="col-md-2">
+                        <label class="switch">
+                            <input [disabled]="isDisabled" type="checkbox" checked="true">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="labelGris">Acepto los <a href="#" data-toggle="modal"
+                                data-target="#modalTyC">términos y condiciones</a></label>
+                    </div>
+                    <div class="col-md-2"></div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col md-4"></div>
+    </div>
+</div>

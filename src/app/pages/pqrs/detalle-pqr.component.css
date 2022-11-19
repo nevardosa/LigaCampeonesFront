@@ -1,0 +1,36 @@
+#contendorForm {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+.boton-Rojo {
+    color: #fff;
+    background-color: rgba(242, 53, 28, 1);
+    border-color: rgba(242, 53, 28, 1);
+}
+
+.labelGris {
+    color: rgba(142, 142, 142, 1);
+    font-size: 12px;
+}
+
+.border {
+    border: #9b9b9b;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+.tamanioImg {
+    max-width: 60%;
+    height: auto;
+}
+
+.lineRight {
+    border-right: 2px solid rgba(0, 0, 0, 0.3);
+    padding-right: 10px;
+}
+
+.btnOn {
+    border: none solid rgba(242, 53, 28, 1);
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}

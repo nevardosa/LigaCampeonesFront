@@ -1,0 +1,104 @@
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h4>MÓDULO<span class="colorTitle">ACTUALIZACIÓN DE DATOS BASE LIGA</span></h4>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 text-center">
+            <form [formGroup]="formaConsulta" (ngSubmit)="buscarUsuario()">
+                <p>Consulta información de registro</p>
+                <input class="form-control inputRadius" type="text" placeholder="Número de Documento"
+                    formControlName="cedula" [class.is-invalid]="CedulaNoValido" pattern="^\d+$">
+                <div *ngIf="CedulaNoValido" class="float-right">
+                    <div *ngFor="let validation of count_validation_messages.cedula">
+                        <small class="text-danger"
+                            *ngIf="validarError(formaConsulta,'cedula', validation.type)">{{validation.message}}</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn boton-Rojo col-lg-6 col-md-6  col-sm-12 margin-boton"
+                    [disabled]="formaConsulta.invalid ">
+                    Buscar
+                    <i class="fa fa-search iconColor" aria-hidden="true"></i>
+                </button>
+            </form>
+            <div class="container">
+                <div class="div-space2">
+                    <button type="button" class="btn-block btn btn-outline-info"
+                        (click)="decargarConsolidadoUsuarios()">
+                        <i class="fas fa-download fa-2x mr-2" style="color: #138496;"></i>
+                        Descargar consolidado de Usuarios Registrados</button>
+                </div>
+            </div>
+            <div class="container">
+                <div class="div-space2">
+                    <a role="button" class="btn-block btn boton-log " href="#logCambioUserModal" data-toggle="modal">
+                        <i class="fa fa-clock-o icono-Rojo fa-2x mr-2" aria-hidden="true"> </i>Descargar LOG de Cambios
+                        Usuarios
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+</div>
+<!-- Modal -->
+<div id="logCambioUserModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 65%;">
+        <div class="modal-content">
+            <div class="modal-header btn-color padding">
+                <h2 class="color-blanco">Log de cambios consolidado</h2>
+                <button type="button" class="color-blanco close btnOn" data-dismiss="modal" aria-label="Close">
+                    <h3>
+                        <span class="color-blanco" aria-hidden="true">&times;</span>
+                    </h3>
+                </button>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="font-weight-bold">Por favor seleccione el rango de fechas para el reporte.</p>
+                        <form [formGroup]="formFechasLogUsuarios">
+                            <div class="row">
+                            <div class="col-sm-1 w-100 p-3">
+                                <label for="activo"><p class="font-weight-bold">Estado:</p></label>
+                            </div>
+                            <div class="col-sm-3 w-100 p-3">
+                                <select class="form-control form-control-sm" formControlName="activo">
+                                    <option value="" selected>Seleccione un estado</option>
+                                    <option *ngFor="let item of lstEstado" [value]="item">{{item}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-form-field color="warn" appearance="fill"
+                                    class="text-center d-flex justify-content-start">
+                                    <mat-label><strong>Rango de Fechas Reporte</strong></mat-label>
+                                    <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker]="picker">
+                                        <input matStartDate placeholder="Fecha Inicial" formControlName="fechaInicio">
+                                        <input matEndDate placeholder="Fecha Final" formControlName="fechaFin">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-outline-comp btn-block btn-hg" 
+                                    (click)="limpiarForm(formFechasLogUsuarios.value)">
+                                    <i class="far fa-trash-undo icono-Comp ">
+                                        Limpiar
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn boton-Rojo mx-3 my-3"
+                (click)="dercargarHistoricoUsuario(formFechasLogUsuarios.value)">Descargar</button>
+        </div>
+    </div>
+</div>

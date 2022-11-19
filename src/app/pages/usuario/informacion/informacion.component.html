@@ -1,0 +1,297 @@
+<div class="container">
+
+
+    <div class="row m-4">
+        <div class="col-md-12 text-center borderStyle">
+            <h2><strong><span>INFORMACIÓN</span></strong>
+            </h2>
+        </div>
+    </div>
+    <div class="responsive text-center">
+
+        <mat-tab-group mat-stretch-tabs>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle margin-bannerText">
+                        <h3 class=" pull-center"><strong><span class="colorTitle">PUNTOS
+                                    GANADOS</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+                <div class="m-4">
+
+                    <table class="table table-striped tabla-gris">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center borde-derecho">Fecha Activacón</th>
+                                <th scope="col" class="text-center borde-derecho">Producto</th>
+                                <th scope="col" class="text-center borde-derecho">Cédula cliente</th>
+                                <th scope="col" class="text-center borde-derecho">No CTA / Min</th>
+                                <th scope="col" class="text-center borde-derecho">Puntos</th>
+                                <th scope="col" class="text-center borde-derecho">Estado</th>
+                                <th scope="col" class="text-center borde-derecho">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let element of ganados | paginate: {
+                                id:'pagGanados', 
+                                itemsPerPage: tamanoPaginaGanados,
+                                currentPage: numPagGanados,
+                                totalItems: totalRegistrosGanados };let i = index" [class.active]="i == currentIndex"
+                                (click)="selectionPGanados.toggle(row)">
+                                <td><span class="text-center">{{ element.fechaActivacion }}</span></td>
+                                <td><span class="text-center">{{ element.producto }}</span></td>
+                                <td><span class="text-center">{{ element.cedulaCliente }}</span></td>
+                                <td><span class="text-center">{{ element.ctaMin }}</span></td>
+                                <td><span class="text-center">{{ element.puntos }}</span></td>
+                                <td><span class="text-center">{{ element.estado }}</span></td>
+                                <td><span class="text-center">{{ element.descripcion }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div *ngIf="cargaPuntosGanados && ganados.length == 0" class="col-lg-12 text-center align-middle">
+                        <h1 class=" pull-center"><span>No hay registros.</span>
+                        </h1>
+                    </div>
+                    <div class="col-lg-12 text-right align-middle"
+                        *ngIf="cargaPuntosGanados && resumenPuntos && ganados.length > 0">
+                        <h4><strong><span>TOTAL: {{ resumenPuntos.puntosGanados }}</span></strong>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-lg-12 row" *ngIf="totalRegistrosGanados > 0 ">
+                    <div class="col-lg-7 ">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6 pull-right">
+                            <form [formGroup]="formularioPuntosGanados">
+                                <div class="row pull-right">
+                                    <div class="form-group">
+                                        <mat-form-field class="pull-left mr-2" appearance="fill">
+                                            <mat-label>Registros por página</mat-label>
+                                            <input spellcheck="false" autocomplete="none" matInput type="text" min="1"
+                                                placeholder="Ingresar Tamaño Pag." formControlName="tamanoPagina">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <button [disabled]="formularioPuntosGanados.invalid"
+                                            class="btn-sm btn btn-danger  btn-color pull-left"
+                                            (click)="cambiarNumeroRegistros(tablaPuntosGanados)">
+                                            Buscar
+                                        </button>
+                                    </div>
+                                    <div *ngIf="cantRegistrosGanadosNoValido">
+                                        <div *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                            <small class="text-danger"
+                                                *ngIf="validarError(formularioPuntosGanados,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 form-group">
+                        <div class="clearfix">
+                            <pagination-controls id="pagGanados" class="d-flex justify-content-end" responsive="true"
+                                previousLabel="Anterior" nextLabel="Siguiente"
+                                (pageChange)="consultarPagina($event,tablaPuntosGanados)"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle margin-bannerText">
+                        <h3 class=" pull-center"><strong><span class="colorTitle">PUNTOS
+                                    VENCIDOS</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+                <div class="m-4">
+
+                    <table class="table table-striped tabla-gris">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center borde-derecho">Cédula</th>
+                                <th scope="col" class="text-center borde-derecho">Celular</th>
+                                <th scope="col" class="text-center borde-derecho">Puntos Ganados</th>
+                                <th scope="col" class="text-center borde-derecho">Puntos Vencidos</th>
+                                <th scope="col" class="text-center borde-derecho">Fecha Activación</th>
+                                <th scope="col" class="text-center borde-derecho">Fecha Vencimiento</th>
+                                <th scope="col" class="text-center borde-derecho">Motivo Vencimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let element of resumenPuntosVencidos | paginate: {
+                                id:'pagVencidos', 
+                                itemsPerPage: tamanoPaginaVencidos,
+                                currentPage: numPagVencidos,
+                                totalItems: totalRegistrosVencidos };let i = index" [class.active]="i == currentIndex"
+                                (click)="selectionPvencidos.toggle(row)">
+                                <td><span class="text-center">{{ element.cedula }}</span></td>
+                                <td><span class="text-center">{{ element.celular }}</span></td>
+                                <td><span class="text-center">{{ element.puntosGanados }}</span></td>
+                                <td><span class="text-center">{{ element.puntosVencidos }}</span></td>
+                                <td><span class="text-center">{{ element.fechaActivacion }}</span></td>
+                                <td><span class="text-center">{{ element.fechaVencimiento }}</span></td>
+                                <td><span class="text-center">{{ element.motivoVencimiento }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div *ngIf="cargaPuntosVencidos && resumenPuntosVencidos.length == 0"
+                        class="col-lg-12 text-center align-middle">
+                        <h1 class=" pull-center"><span>No hay registros.</span>
+                        </h1>
+                    </div>
+                    <div class="col-lg-12 text-right align-middle"
+                        *ngIf="cargaPuntosVencidos && resumenPuntos && resumenPuntosVencidos.length > 0">
+                        <h4><strong><span>TOTAL: {{ resumenPuntos.puntosVencidos }}</span></strong>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-lg-12 row" *ngIf="totalRegistrosVencidos > 0 ">
+                    <div class="col-lg-7 ">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6 pull-right">
+                            <form [formGroup]="formularioPuntosVencidos">
+                                <div class="row pull-right">
+                                    <div class="form-group">
+                                        <mat-form-field class="pull-left mr-2" appearance="fill">
+                                            <mat-label>Registros por página</mat-label>
+                                            <input spellcheck="false" autocomplete="none" matInput type="text" min="1"
+                                                placeholder="Ingresar Tamaño Pag." formControlName="tamanoPagina">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <button [disabled]="formularioPuntosVencidos.invalid"
+                                            class="btn-sm btn btn-danger  btn-color pull-left"
+                                            (click)="cambiarNumeroRegistros(tablaPuntosVencidos)">
+                                            Buscar
+                                        </button>
+                                    </div>
+                                    <div *ngIf="cantRegistrosVencidosNoValido">
+                                        <div *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                            <small class="text-danger"
+                                                *ngIf="validarError(formularioPuntosVencidos,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 form-group">
+                        <div class="clearfix">
+                            <pagination-controls id="pagVencidos" class="d-flex justify-content-end" responsive="true"
+                                previousLabel="Anterior" nextLabel="Siguiente"
+                                (pageChange)="consultarPagina($event,tablaPuntosVencidos)"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-tab>
+
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <div class="col-lg-12 text-center align-middle margin-bannerText">
+                        <h3 class=" pull-center"><strong><span class="colorTitle">PUNTOS
+                                    REDIMIDOS</span></strong>
+                        </h3>
+                    </div>
+                </ng-template>
+                <div class="row m-4">
+
+                    <table class="table table-striped tabla-gris">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center borde-derecho">Fecha Redención</th>
+                                <th scope="col" class="text-center borde-derecho">Producto</th>
+                                <th scope="col" class="text-center borde-derecho">Especificaciones del Premio</th>
+                                <th scope="col" class="text-center borde-derecho">Puntos Redimidos</th>
+                                <th scope="col" class="text-center borde-derecho">Estado</th>
+                                <th scope="col" class="text-center borde-derecho">Motivo de rechazo</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let element of redimidos | paginate: {
+                                id:'pagRedimidos', 
+                                itemsPerPage: tamanoPaginaRedimidos,
+                                currentPage: numPagRedimidos,
+                                totalItems: totalRegistrosRedimidos };let i = index" [class.active]="i == currentIndex"
+                                (click)="selectionPRedimidos.toggle(row)">
+                                <td><span class="text-center"><strong>{{element.fechaPedido}}</strong></span></td>
+                                <td><span class="text-center">{{ element.cantidad }} {{
+                                        element.nombreCategoria
+                                        }}
+                                    </span></td>
+                                <td><span class="text-center">{{element.nombreProducto}}</span></td>
+                                <td><span class="text-center">{{element.puntos}}</span></td>
+                                <td><span class="text-center">{{element.estado}}</span></td>
+                                <td><span class="text-center">{{element.motivoRechazo}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div *ngIf="cargaPuntosRedimidos && redimidos && redimidos.length == 0"
+                        class="col-lg-12 text-center align-middle">
+                        <h1 class=" pull-center"><span>No hay registros.</span>
+                        </h1>
+                    </div>
+                    <div class="col-lg-12 text-right align-middle"
+                        *ngIf="cargaPuntosRedimidos && redimidos && redimidos.length > 0">
+                        <h4><strong><span>TOTAL: {{ resumenPuntos.puntosCanjeados}}</span></strong>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-lg-12 row" *ngIf="totalRegistrosRedimidos > 0 ">
+                    <div class="col-lg-7 ">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6 pull-right">
+                            <form [formGroup]="formularioPuntosRedimidos">
+                                <div class="row pull-right">
+                                    <div class="form-group">
+                                        <mat-form-field class="pull-left mr-2" appearance="fill">
+                                            <mat-label>Registros por página</mat-label>
+                                            <input spellcheck="false" autocomplete="none" matInput type="text" min="1"
+                                                placeholder="Ingresar Tamaño Pag." formControlName="tamanoPagina">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <button [disabled]="formularioPuntosRedimidos.invalid"
+                                            class="btn-sm btn btn-danger  btn-color pull-left"
+                                            (click)="cambiarNumeroRegistros(tablaPuntosRedimidos)">
+                                            Buscar
+                                        </button>
+                                    </div>
+                                    <div *ngIf="cantRegistrosRedimidosNoValido">
+                                        <div *ngFor="let validation of count_validation_messages.tamanoPagina">
+                                            <small class="text-danger"
+                                                *ngIf="validarError(formularioPuntosRedimidos,'tamanoPagina', validation.type)">{{validation.message}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 form-group">
+                        <div class="clearfix">
+                            <pagination-controls id="pagRedimidos" class="d-flex justify-content-end" responsive="true"
+                                previousLabel="Anterior" nextLabel="Siguiente"
+                                (pageChange)="consultarPagina($event,tablaPuntosRedimidos)">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div>
+    <div class="container mt-4 mb-4">
+      <div class="alert alert-warning text-center mt-3" *ngIf="cargacompleta && listaPerfiles && listaPerfiles.length == 0">
+            <h4 class="alert-heading">No hay registros</h4>
+            <p>
+                <i class="fa fa-exclamation fa-2x"></i>
+            </p>
+        </div>
+        <div class="row" *ngIf="cargacompleta && listaPerfiles &&  listaPerfiles.length > 0">
+            <div class="col-md-12 text-center">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="7">
+                                <h5>LISTA DE PERFILES</h5>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>id </th>
+                            <th>nombre </th>
+                            <th>descripcion </th>
+                            <th>Refiere</th>
+                            <th>canales</th>
+                            <th>opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let value of listaPerfiles;  let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ value.idPerfil }}</td>
+                            <td>{{ value.nombrePerfil }}</td>
+                            <td class="control-ellipsis ">
+                                <span class="ellipsis pos-absolute">{{value.descripcionPerfil}}</span>
+                            </td>
+                            <td>
+                                <div class="col-sm-2" >
+                                    <label class="switch">
+                                    <input type="checkbox" [disabled]="true" [checked]='value.isReferido == 0'>                    
+                                    <span class="slider round"></span> 
+                                    </label>
+                                </div>
+                            </td>
+                            <td>{{ value.canales }}</td>
+                            
+                            <td><a class="texto" (click)="editarPerfil(value)">
+                                Editar
+                                <i class="fas fa-user-edit btn-sm " style="color:#f53201;"></i>
+                            </a></td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,213 @@
+<div class="container mt-4 mb-4">
+
+    <div class="row">
+        <div class="col-md-6">
+            <h4>MÓDULO<span class="colorTitle">PEDIDOS</span></h4>
+        </div>
+    </div>
+
+
+
+
+    <div class="col-md-12">
+        <form [formGroup]="formFechas">
+            <div class="form-group">
+                <button class="btn btn-danger pull-right ml-4 colorButtonDanger"
+                    (click)="descargarPedidos(formFechas.value)">
+                    <i class="fa fa-download iconColor" aria-hidden="true"></i>
+                    Descargar pedidos
+                </button>
+
+                <button *ngIf="validarFormFechas()" class="btn btn-info pull-right ml-4" (click)="limpiarForm()">
+                    Borrar Fechas
+                </button>
+
+                <mat-form-field color="warn" appearance="fill" class="pull-right">
+                    <mat-label><strong>Rango de Fechas Reporte</strong></mat-label>
+                    <mat-date-range-input [min]="minDate" [max]="maxDate" [rangePicker]="picker">
+                        <input matStartDate readonly formControlName="fechaInicio" placeholder="Fecha Inicial">
+                        <input matEndDate readonly formControlName="fechaFin" placeholder="Fecha Final">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <section>
+        <div>
+            <form [formGroup]="formaConsultaRegistros" (ngSubmit)="cambiarCantRegistros()">
+                <div class="row">
+                    <div class="input-group col-3">
+                        <input type="text" min="1" class="form-control" formControlName="inputRegistros"
+                            placeholder="Cant. Registros" [class.is-invalid]="RegistrosNoValido">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-danger colorButtonDanger"
+                                [disabled]="formaConsultaRegistros.invalid">
+                                >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="RegistrosNoValido">
+                    <div *ngFor="let validation of count_validation_messages.inputRegistros">
+                        <small class="text-danger"
+                            *ngIf="validarError(formaConsultaRegistros,'inputRegistros', validation.type)">{{validation.message}}</small>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <form class="form-inline" [formGroup]="formularioBusqueda">
+            <div class="form-group col-lg-3 col-md-2 col-sm-3" style="padding: 3px;">
+                <input type="text" class="form-control w-100" placeholder="Nombre Usuario" formControlName="inptNombre">
+            </div>
+            <div class="form-group col-lg-3 col-md-2 col-sm-3" style="padding: 3px;">
+                <input type="text" class="form-control w-100" formControlName="inptProducto"
+                    placeholder="Nombre Producto" />
+            </div>
+            <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+                <input type="text" class="form-control w-100" formControlName="inptDepartamento"
+                    placeholder="Nombre Departamento" />
+            </div>
+
+            <div class="form-group col-lg-2 col-md-2 col-sm-3" style="padding: 3px;">
+                <select class="form-control w-100" id="inputEstado" formControlName="inptEstado">
+                    <option value='' selected>Estado del pedido</option>
+                    <option value='Efectivo'>Efectivo</option>
+                    <option value='Rechazado'>Rechazado</option>
+                    <option value='Pendiente'>Pendiente</option>
+                </select>
+            </div>
+
+            <button type="button" class="form-group btn btn-danger colorButtonDanger col-lg-1 col-md-1 col-sm-2"
+                (click)="buscar()">
+                <i class="fa fa-search iconColor"></i>
+                Buscar
+            </button>
+            <button type="button" class="form-group btn btn-danger colorButtonDanger col-lg-1 col-md-1 col-sm-2"
+                (click)="limpiar()">
+                <i class="fa fa-refresh iconColor"></i>
+                Limpiar
+            </button>
+        </form>
+        <div class="add-scroll" *ngIf="cargaCompleta && pedidos && pedidos.length > 0">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Cédula</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Fecha Nacimiento</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Cant.</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Ptos</th>
+                        <th scope="col">Depto</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Notas</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Efectivo</th>
+                        <th scope="col">Motivo rechazo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let value of pedidos| paginate: {
+                        itemsPerPage: tamanoPagina,
+                        currentPage: numPag,
+                        totalItems: totalRegistros }" [class.active]="i == currentIndex">
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{value.cedulaUsuario }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{value.celular }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis " style="    width: 90% !important;">{{ value.nombre | titlecase
+                                }} {{ value.apellido | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.fecha_nacimiento | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.correo | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.nombreCategoria | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span>{{ value.nombreProducto | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.cantidad }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.costo }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.puntos }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.departamento | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.ciudad | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis">{{ value.direccion | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis">
+                            <span class="ellipsis">{{ value.descripcionCortaProducto | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="">{{ value.fechaPedido }}</span>
+                        </td>
+                        <td class="control-ellipsis ">
+                            <span class="ellipsis ">{{ value.estado | titlecase }}</span>
+                        </td>
+                        <td class="control-ellipsis">
+                            <span class="ellipsis">{{ value.motivoRechazo | titlecase}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <!-- <div class="row text-right" *ngIf="totalRegistros > 0" >
+            <div class="col no-padding">
+                <div class='btn-group'>
+                    <button type='button' class='btn btn-outline-secondary btn-sm btn-paginacion letra-paginacion'
+                        [disabled]='numPag == 1' (click)='getAnteriorPagina()'>
+                        < Anterior</button>
+                            <button type='button'
+                                class='btn btn-outline-secondary btn-sm btn-paginacion numeracion-paginacion'
+                                (click)='cambiarPagina(i+1,$event)' *ngFor="let obj of totalPaginas; let i = index"> {{
+                                i+1}}</button>
+                            <button type='button' class='btn btn-outline-secondary btn-sm btn-paginacion letra-paginacion'
+                                [disabled]='numPag == totalPaginas.length '
+                                (click)='getSiguientePagina($event)'>Siguiente></button>
+                </div>
+            </div>
+        </div> -->
+        <div class="clearfix" *ngIf="totalRegistros > 0 ">
+            <pagination-controls class="d-flex justify-content-end" responsive="true" previousLabel="Anterior"
+                nextLabel="Siguiente" (pageChange)="cambiarPagina($event)"></pagination-controls>
+        </div>
+    </section>
+
+    <div class="alert alert-warning text-center mt-3" *ngIf="cargaCompleta && pedidos && pedidos.length == 0">
+        <h4 class="alert-heading">No hay registros</h4>
+        <p>
+            <i class="fa fa-exclamation fa-2x"></i>
+        </p>
+    </div>
+
+
+</div>

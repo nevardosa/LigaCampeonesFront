@@ -1,0 +1,335 @@
+<div class="container" style="font-size: 20px">
+    <div class="row">
+        <div class="col-lg-12 text-center align-middle margin-bannerText">
+            <h1 class=" pull-center" *ngIf="tituloList; else titulo">LISTA REFERIDOS
+            </h1>
+            <ng-template #titulo>
+                <h1 class=" pull-center">REFERIDOS
+                </h1>
+            </ng-template>
+
+        </div>
+    </div>
+
+
+    <div class="container" *ngIf="listaRef; else referido">
+
+        <div class="table-responsive">
+
+            <div class="col-md-12 div-space2">
+                <mat-form-field appearance="fill">
+                    <mat-label>Búsqueda</mat-label>
+                    <input (keyup)="buscarEnTabla($event.target.value)" spellcheck="false" autocomplete="none" matInput
+                        placeholder="Búsqueda">
+                </mat-form-field>
+
+                <div class="form-group">
+                    <button type="button" class="btn-lg btn btn-danger btn-color col-2 pull-right"
+                        (click)="agregarReferido()"> Nuevo Referido</button>
+                </div>
+            </div>
+            <section>
+                <table mat-table [dataSource]="dataSourceReferido" class="table table-striped tabla-gris">
+
+                    <ng-container matColumnDef="cedula">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Cédula
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.cedula}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nombre">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Nombre
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.nombre}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="celular">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Celular
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.telefonoCelular}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="telefono">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Teléfono
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.telefono2}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="direccion">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Dirección
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.dirreccion}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ciudad">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Ciudad
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.nombreCiudad}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="departamento">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Departamento
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.nombreDepartamento}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="segmento">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Segmento
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.segmento}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="producto">
+                        <th scope="col" class="text-center borde-derecho " mat-header-cell *matHeaderCellDef>
+                            Productos de Interés
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="ellipsis text-center">{{ element.producto}}</span>
+                        </td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="Accion">
+                        <th scope="col" class="text-center borde-derecho p-1" mat-header-cell *matHeaderCellDef> Acción
+                        </th>
+                        <td class="borde-derecho p-1 text-center align-middle" mat-cell *matCellDef="let element">
+                            <div class="btn-group">
+                                <button class="fas fa-edit fa-lg text-info btn-lg btn btn-light mr-2"
+                                    (click)="actualizarReferido(element)"></button>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="ColumnsReferido"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ColumnsReferido;" (click)="selection.toggle(row)"></tr>
+                </table>
+            </section>
+            <div *ngIf="listaReferidos.length == 0">
+                <div class="col-lg-12 text-center align-middle">
+                    <h1 class=" pull-center"><span>No hay registros.</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" [hidden]="!listaRef">
+        <mat-paginator #paginatorReferido [pageSizeOptions]="[5, 10, 25, 50, 100]" showFirstLastButtons>
+        </mat-paginator>
+    </div>
+
+    <ng-template #referido>
+        <div class="container">
+            <div class="form-group">
+                <button type="button" class="btn-sm btn btn-outline-info col-2 pull-letf"
+                    (click)="regresartable()">Regresar</button>
+            </div>
+            <div class="row div-space2">
+                <div class="col-md-6 div-referido div-interno">
+                    <form [formGroup]="formUsuario" class="font-table">
+                        <div class="form-group text-center align-middle">
+                            <img src="assets/img/planilla.png" class="tamanioImg">
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputNombre" class="col-sm-4 col-form-label">Nombre:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" formControlName="nombre"
+                                    disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputApellido" class="col-sm-4 col-form-label">Apellidos:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" formControlName="apellido"
+                                    disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputDocumento" class="col-sm-4 col-form-label">Cédula:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" formControlName="documento"
+                                    disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputCanal" class="col-sm-4 col-form-label">Canal:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" id="inputCanal"
+                                    formControlName="canal" disabled [hidden]="!muestraSelectCanales">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-6 div-interno">
+                    <form [formGroup]="formReferido" class="font-table" (ngSubmit)="GuardarReferido()">
+                        <div class="form-group row">
+                            <label for="inputCedula" class="col-lg-4 col-form-label">Cédula del
+                                referido:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" formControlName="cedula"
+                                    [class.is-invalid]="cedulaNoValido">
+                                <small *ngIf="cedulaNoValido" class="text-danger">Debe ingresar cédula</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputNombre" class="col-sm-4 col-form-label labelPad">Nombre del
+                                referido:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control " formControlName="nombre"
+                                    [class.is-invalid]="nombreNoValido">
+                                <small *ngIf="nombreNoValido" class="text-danger">Debe ingresar nombre
+                                    referido</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputCelular" class="col-sm-4 col-form-label labelPad">Tel celular del
+                                referido:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control " formControlName="numeroCelular"
+                                    [class.is-invalid]="numeroCelularNoValido">
+                                <small *ngIf="numeroCelularNoValido" class="text-danger">Debe ingresar numero
+                                    celular</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputTelefono" class="col-sm-4 col-form-label labelPad">Telefono
+                                2:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control " formControlName="telefono"
+                                    [class.is-invalid]="telefonoNoValido">
+                                <small *ngIf="telefonoNoValido" class="text-danger">Debe ingresar un numero
+                                </small>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label for="inputDepartamento" class="col-sm-4 col-form-label">Departamento:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm " id="inputDepartamento"
+                                    formControlName="departamento" [class.is-invalid]="departamentoNoValido"
+                                    (change)="PintarCiudad()">
+                                    <option *ngFor="let item of departamentoArray" [value]="item.codigoDane">
+                                        {{item.nombreLugar}}</option>
+                                </select>
+                                <small *ngIf="departamentoNoValido" class="text-danger">Debe seleccionar
+                                    departamento</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputCiudad" class="col-sm-4 col-form-label">Ciudad:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm " id="inputCiudad" formControlName="ciudad"
+                                    [class.is-invalid]="ciudadNoValido">
+                                    <option *ngFor="let item of ciudadArray" [value]="item.codigoDane">
+                                        {{item.nombreLugar}}</option>
+                                </select>
+                                <small *ngIf="ciudadNoValido" class="text-danger">Debe seleccionar
+                                    ciudad</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputDireccion" class="col-sm-4 col-form-label">Dirección:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm" formControlName="direccion"
+                                    [class.is-invalid]="direccionNoValido">
+                                <small *ngIf="direccionNoValido" class="text-danger">Debe ingresar una
+                                    dirección</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputSegmento" class="col-sm-4 col-form-label">Segmento:</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm" formControlName="segmento"
+                                    [class.is-invalid]="segmentoNoValido">
+                                    <option *ngFor="let item of listaSegmentos" [value]="item">
+                                        {{item}}</option>
+                                </select>
+                                <small *ngIf="segmentoNoValido" class="text-danger">Debe seleccionar
+                                    Segmento</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputProducto" class="col-sm-4 col-form-label">Productos de
+                                interés:</label>
+                            <div class="col-sm-8">
+                                <label *ngFor="let producto of listaProductos, let i = index">
+                                    <mat-checkbox class="margin mr-2" [checked]="activarCheckbox(producto, i)"
+                                        (change)="productoSelect(producto, $event)">
+                                    </mat-checkbox>
+                                    <span class="mr-3">{{producto}}</span>
+                                </label>
+                                <small *ngIf="productoNoValido" class="text-danger">Debe ingresar producto de
+                                    interés</small>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-4">
+                                <label class="switch">
+                                    <input input type="checkbox" checked formControlName="aceptoTerminos"
+                                        [class.is-invalid]="AceptoTerminosNovalido">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <label class="labelGris">Acepto los <a href="" (click)="cargarTerminosYCondiciones()"
+                                        data-toggle="modal" data-target="#modalTyC">términos y
+                                        condiciones</a></label><br>
+                                <small *ngIf="AceptoTerminosNovalido" class="text-danger">Debe aceptar los
+                                    terminos
+                                    y
+                                    condiciones</small>
+                            </div>
+                        </div>
+                        <button [disabled]="!formReferido.valid || productoNoValido || productCheckNew" type="submit"
+                            class="btn boton-Rojo btn-block mt-2 mb-4">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalTyC" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 85%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close btnOn" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="container">
+                    <div class="marginTyc">
+                        <div #divTyCRef>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

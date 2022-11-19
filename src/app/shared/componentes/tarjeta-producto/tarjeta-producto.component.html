@@ -1,0 +1,57 @@
+<div class="card height-100" [formGroup]="formulario">
+    <h6 class="card-title card-styleTitle centrar-cont-celda truncar-texto">Llévalo por {{ articulo.puntos }} PTS</h6>
+    <div class="card-body text-center">
+        <h6 class="font-weight color-black truncar-texto">{{ articulo.titulo }}</h6>
+
+        <div class="padding-card-body">
+            <p><img class=" img-fluid car-img" [src]="articulo.imagen" alt="card image"  [ngClass]="addClass()"></p>
+
+            <div class="row situar-abajo" *ngIf="articulo.unidadesDisponibles == 0">
+                <div class="alert alert-danger col col-md-12" role="alert"  >
+                    AGOTADO
+                </div>
+            </div>
+
+            <section  *ngIf="articulo.unidadesDisponibles != 0">
+                <strong class="text-left" ><p>Cantidad</p></strong>
+                <div class="form-row">
+                    <div class="form-group col-md-4 no-padding">
+                      <input type="text" class="form-control no-padding form-control-sm" formControlName="cantidad">
+                    </div>
+                    <div class="form-group col-2">
+                      <button class="btn btn-outline-secondary btn-sm" (click)="aumentarCantidad()">
+                          <i class="fa fa-plus" aria-hidden="true" ></i>
+                        </button>
+                    </div>
+                    <div class="form-group col-2">
+                        <button class="btn btn-outline-secondary btn-sm" (click)="disminuirCantidad()">
+                            <i class="fa fa-minus" aria-hidden="true" ></i>
+                        </button>
+                    </div>
+                </div>
+                <div *ngIf="cantidadNoValido">
+                    <div *ngFor="let validation of count_validation_messages.cantidad">
+                        <small  class="text-danger" *ngIf="validarError(formulario,'cantidad', validation.type)">{{validation.message}}</small>
+                    </div>
+                </div>
+                <div class="form-row" >
+                    <div class="form-group col-md-10 no-padding">
+                      <button class="btn btn-block btn-red btn-lg"  (click)="redimir()" [disabled]="validaRedencion()">
+                          redimir
+                          <i class="fa fa-cart-plus iconColor" aria-hidden="true" ></i>
+                      </button>
+                    </div>
+                    <div class="form-group col-2">
+                        <button class="btn btn-outline-secondary  btn-circle border-none color-azul" >
+                            <i class="fa fa-plus  icono-blanco" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+
+    </div>
+</div>
+
+

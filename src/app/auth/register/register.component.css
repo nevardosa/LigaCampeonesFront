@@ -1,0 +1,109 @@
+.fondo {
+    max-width: 100%;
+    height: auto;
+    text-align: center;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    background-image: linear-gradient( rgba(255, 0, 0, 0.3), rgba(255, 0, 0, 0.3)), url(../../../assets/img/Enmascarar_grupo_13.png);
+}
+
+.formularioStyle {
+    background: white;
+    border-radius: 10px;
+    padding-right: 6px;
+    padding-left: 6px;
+}
+
+.labelStyle {
+    color: rgba(242, 53, 28, 1);
+}
+
+.labelGris {
+    color: rgba(142, 142, 142, 1);
+    font-size: 12px;
+}
+
+.boton-Rojo {
+    color: #fff;
+    background-color: rgba(242, 53, 28, 1);
+    border-color: rgba(242, 53, 28, 1);
+}
+
+.switch {
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 34px;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #f53201;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #f53201;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#contendorForm {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset
+}
+
+.btnOn {
+    border: none solid rgba(242, 53, 28, 1);
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.centrar-form {
+    margin: 0 auto;
+}
+
+.centrar-txt-div {
+    align-items: center;
+}
+
+.terminos .col-lg-1 {
+    padding-right: 0px;
+    padding-left: 0px;
+}

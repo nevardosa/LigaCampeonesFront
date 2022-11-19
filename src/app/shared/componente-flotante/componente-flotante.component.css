@@ -1,0 +1,34 @@
+.btn-flotante {
+	font-size: 22px; /* Cambiar el tamaño de la tipografia */
+	text-transform: uppercase; /* Texto en mayusculas */
+	text-align: center;
+	font-weight: bold; /* Fuente en negrita o bold */
+	color: #ffffff; /* Color del texto */
+	border-radius: 98px; /* Borde del boton */
+	letter-spacing: 2px; /* Espacio entre letras */
+	background-color: #e42019ad; /* Color de fondo */
+	padding: 35px 10px; /* Relleno del boton */
+	width: 100px;
+    height: 100px;
+	position: fixed;
+	bottom: 70px;
+	right: 40px;	
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	transition: all 300ms ease 0ms;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	z-index: 78;
+}
+.btn-flotante:hover {
+	background-color: #e62517; /* Color de fondo al pasar el cursor */
+	box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+	transform: translateY(-7px);
+	text-decoration: none;
+}
+@media only screen and (max-width: 600px) {
+ 	.btn-flotante {
+		font-size: 14px;
+		padding: 100px 200px;
+		bottom: 0px;
+		right: 20px;
+	}
+}
