@@ -1,5 +1,5 @@
 
-FROM node:7-alpine
+FROM node:12-alpine
 ENV PROJECT_DIR=/app 
 
 WORKDIR $PROJECT_DIR 
