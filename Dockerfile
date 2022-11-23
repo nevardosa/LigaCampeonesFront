@@ -19,5 +19,5 @@ COPY nginx.conf /etc/nginx/conf.d/nginx.conf
 ###RUN rm -rf /usr/share/nginx/html/*
 COPY --from=build-step /app/dist/LigaCampeones /usr/share/nginx/html
 
-EXPOSE 8082:8082
+EXPOSE 8080:8080
 CMD ["nginx", "-g", "daemon off;"]
