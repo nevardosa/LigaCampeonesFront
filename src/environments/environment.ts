@@ -14,16 +14,16 @@ url_ligaCampeones: 'http://localhost:8080',
 
   // Ambiente DEV nuevo CO_Claro_IntCus_EAF_Domain_Dev
   
-  // url_proxy: 'http://100.123.13.103:8002/wsProxy',
- //  url_ligaCampeones: 'http://100.123.13.103:8002/WSLigaCampeones',
-  // url_ligaCampeones: 'http://100.123.246.50:8080/WSSalesChannelredemption-web',
-  // url_sergeneral: 'http://100.123.13.103:8002/WSSerGeneral'
+   url_proxy: 'http://100.123.13.103:8002/wsProxy',
+   url_ligaCampeones: 'http://100.123.13.103:8002/WSLigaCampeones',
+   //url_ligaCampeones: 'http://100.123.246.50:8080/WSSalesChannelredemption-web',
+   url_sergeneral: 'http://100.123.13.103:8002/WSSerGeneral'
 
 
-
+/*
      url_proxy: 'https://ligadecampeonesclaro.com.co/wsProxy',
      url_sergeneral: 'https://ligadecampeonesclaro.com.co/WSSerGeneral',
      url_ligaCampeones: 'https://ligadecampeonesclaro.com.co/WSLigaCampeones' 
-    
+    */
 }
 
